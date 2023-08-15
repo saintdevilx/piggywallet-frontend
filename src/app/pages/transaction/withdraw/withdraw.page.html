@@ -1,0 +1,130 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons>
+      <ion-back-button></ion-back-button>
+      <ion-title>Withdraw</ion-title>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div *ngIf="!enableReviewDetail">
+    <h1 class="ion-text-center "><ion-text color="dark" class="font-size-20 fw-500">{{ savingGoal.title }}</ion-text></h1>    
+  
+    <div class="big-round">
+      <ion-card-content class="ion-text-center">
+        <h1><ion-text color="primary" style="font-size: inherit;">₹ {{ savingGoal.current_amount }}</ion-text></h1>
+      </ion-card-content>
+
+      <ion-card-content  *ngIf="savingGoal.current_amount > 10">
+        <h2 class>
+          <ion-text class="fw-500">Amount to be withdrawn</ion-text>
+        </h2>
+        <ion-item class="small">
+          <div class="width-100 fw-400 mid-size-text">
+            <div class="curr-symbol" style="top:20%;">₹</div>
+            <ion-input placeholder='Amount' type='number' [(ngModel)]="withdrawl_amount" (ionInput)="checkValidAmount($event)"></ion-input>          
+          </div>
+        </ion-item>
+        <h3>
+          <div *ngIf="savingGoal.current_amount < withdrawl_amount">
+            <ion-chip color="danger" style="padding:30px 20px;border:1px solid #d33939">
+              Withdraw amount can not be greater than available amount.
+            </ion-chip>
+          </div>          
+        </h3>
+      </ion-card-content>
+    </div>
+    <div *ngIf="savingGoal.current_amount > 10">
+      <ion-item lines='none'>
+        <ion-label class="ion-text-wrap">
+          <ion-text class="small-label">
+          First transfer of the month is free. we may charge a very small amount from all transfers except the first transfer of the month, because we pay high amount when you deposit or withdraw money to your gullak. charges are mentioned at the bottom.
+          </ion-text>
+        </ion-label>  
+      </ion-item>
+      
+      <app-bank-details [options]="options"></app-bank-details>
+      <div>
+        <ion-card-content>
+          Sometimes it may take upto 24-48 hours to transfer money to your bank account. 
+          Money will be tranferred via NEFT.  
+        </ion-card-content>      
+      </div>
+
+      <ion-card style="box-shadow: none !important;">
+        <ion-grid>
+          <ion-row>
+            <ion-col class="small-label fw-500">Amount</ion-col>
+            <ion-col class="small-label fw-500">Bank</ion-col>
+            <ion-col class="small-label fw-500">UPI</ion-col>
+          </ion-row>
+          <ion-row>
+            <ion-col class="small-label">₹ 1,000 and Below</ion-col>
+            <ion-col class="small-label">₹ 2.50</ion-col>
+            <ion-col class="small-label">₹ 4.0</ion-col>
+          </ion-row>
+          <ion-row>
+            <ion-col class="small-label">₹ 1,000 Above ₹ 10,000 and Below</ion-col>
+            <ion-col class="small-label">₹ 5.0</ion-col>
+            <ion-col class="small-label">₹ 6.0</ion-col>
+          </ion-row>
+          <ion-row>
+            <ion-col class="small-label">₹ 10,000 Above</ion-col>
+            <ion-col class="small-label">₹ 10.0</ion-col>
+            <ion-col class="small-label">₹ 9.0</ion-col>
+          </ion-row>   
+          <ion-row>
+            <ion-col size="12">
+              <ion-text>
+                GST is applicable
+              </ion-text>
+            </ion-col>
+          </ion-row>     
+        </ion-grid>      
+      </ion-card>    
+    </div>
+
+    <div *ngIf="savingGoal.current_amount< 10">
+      <div class="ion-text-center">
+        Sorry ! You do not have sufficient balance to withdraw.
+      </div>
+    </div>
+
+  </div>
+  <div *ngIf="enableReviewDetail">
+    <ion-card-header>Please review details </ion-card-header>
+    <ion-list lines='none'>
+      <ion-item>
+        <ion-text slot="start" color="medium" class="small-label"><span>Withdraw</span></ion-text>
+        <ion-label>
+          <ion-text><h2> ₹ {{ withdrawl_amount }}</h2></ion-text>
+        </ion-label>
+      </ion-item>
+      <ion-item>
+        <ion-text slot="start" color="medium" class="small-label">
+          <span *ngIf="options.selectedAccount.upi_vpa">UPI VPA</span>
+          <span *ngIf="!options.selectedAccount.upi_vpa">Bank Name</span>
+        </ion-text>
+        <ion-label>
+          <ion-text><h2>{{ options.selectedAccount.bank_name || options.selectedAccount.upi_vpa }}</h2></ion-text>
+        </ion-label>
+      </ion-item>
+      <ion-item *ngIf="!options.selectedAccount.upi_vpa">
+        <ion-text slot="start" color="medium" class="small-label">Account no</ion-text>
+        <ion-label>
+          <ion-text><h2>{{ options.selectedAccount.account_no }}</h2></ion-text>
+        </ion-label>        
+      </ion-item>
+      <ion-item *ngIf="error">
+        <ion-text color="danger">{{error.message}}</ion-text>
+      </ion-item>      
+    </ion-list>
+  </div>
+  <img src='assets/coins.png' hidden class="bg-img"  />
+</ion-content>
+
+<ion-footer  *ngIf="savingGoal.current_amount > 10 && savingGoal.current_amount >= withdrawl_amount">  
+  <ion-button class="box-shadow-purple" *ngIf="!enableReviewDetail" (click)="setReviewDetail($event)" shape='round' expand='full' [disabled]="!withdrawl_amount || withdrawl_amount > savingGoal.current_amount || !options.selectedAccount || !options.selectedAccount.pk ">Withdraw ₹ {{ withdrawl_amount || 0 }}</ion-button>
+  <ion-button class="box-shadow-purple" *ngIf="enableReviewDetail" (click)="sendWithdrawRequest($event)" shape='round' expand='full' >Continue <ion-spinner *ngIf="withdrawRequestPending"></ion-spinner></ion-button>    
+</ion-footer>

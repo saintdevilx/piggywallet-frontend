@@ -1,0 +1,94 @@
+<ion-header>
+  <ion-toolbar class="purple-bg-color">
+    <ion-buttons>
+      <ion-button fill='clear' [routerLink]="['/tabs/home']" routerLinkActive="router-link-active"  slot="start">
+        <ion-icon name="arrow-round-back"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="purple-bgx ">
+  <ion-refresher color="light" slot="fixed" (ionRefresh)="doRefresh($event)">
+    <ion-refresher-content color="light"></ion-refresher-content>
+  </ion-refresher>  
+  <!-- top nav -->    
+  <!-- Refresh-->
+  <div class="purple-bg-color">
+    <ion-list class="history-filter-block"> 
+      <ion-item lines='none'>
+        <ion-title color="light" slot="start">History</ion-title>    
+        <ion-button (click)="toggleFilter($event)" color="light" slot="end" fill='clear'>
+          <ion-icon src='assets/filter-results-button.svg'></ion-icon>
+        </ion-button>
+      </ion-item>
+      <div >
+        <form [formGroup]='historyFilterForm' (ngSubmit)="onFilterSubmit($event)">
+          <ion-card class="big-round history-filter ion-padding">
+            <ion-item>
+              <ion-label>
+                Transaction type
+              </ion-label>
+              <ion-select formControlName="type" placeholder='choose one'>
+                <ion-select-option value=''>All</ion-select-option>                              
+                <ion-select-option value='CREDIT'>Deposit</ion-select-option>
+                <ion-select-option value='DEBIT'>Withdraw</ion-select-option>
+              </ion-select>
+            </ion-item>
+            <ion-item>
+              <ion-label>
+                From
+              </ion-label>
+              <ion-select formControlName='timeline' placeholder='choose'>
+                <ion-select-option value=''>All</ion-select-option>              
+                <ion-select-option value='1'>Today</ion-select-option>
+                <ion-select-option value='7'>1 Week</ion-select-option>
+                <ion-select-option value='14'>2 Week</ion-select-option>
+                <ion-select-option value='21'>3 Week</ion-select-option>                    
+                <ion-select-option value='30'>1 Month</ion-select-option>
+                <ion-select-option value='60'>2 Month</ion-select-option>          
+              </ion-select>
+            </ion-item>
+            <ion-item lines='none'>
+              <ion-label>Sort by</ion-label>
+              <ion-select formControlName="order_by" placeholder='choose'>
+                <ion-select-option value='latest'>Latest on top</ion-select-option>
+                <ion-select-option value='oldest'>Oldest on top</ion-select-option>
+              </ion-select>
+            </ion-item>
+            <ion-item lines='none'>
+              <ion-button slot='end' fill='clear' (click)="toggleFilter($event)">Cancel</ion-button>
+              <ion-button slot='end' class="round-btn" shape='round' type='submit' >Done</ion-button>
+            </ion-item>
+          </ion-card>
+        </form>
+      </div>
+    </ion-list>  
+    <ion-card class="ion-text-center grey-bg-arc no-margin-left no-margin-right" *ngIf="initialLoading">
+      <ion-item lines='none'>
+        <ion-avatar slot="start">
+          <ion-skeleton-text></ion-skeleton-text>
+        </ion-avatar>
+        <ion-skeleton-text animated></ion-skeleton-text>      
+      </ion-item>
+      <ion-item  lines='none'>
+        <ion-skeleton-text animated width='20%' slot="start"></ion-skeleton-text>
+        <ion-skeleton-text animated width='30%' slot="end"></ion-skeleton-text>      
+      </ion-item>
+    </ion-card>
+    <div class="grey-bg-arc grey-bg-arc-reverse no-margin-right no-margin-left history-list pad-top-10 pad-bottom-10" *ngIf="historyResultList">
+      <app-transaction-history [historyResultList]='historyResultList'></app-transaction-history>
+      <div *ngIf="!hasMoreData && historyResultList && historyResultList.length">    
+        <ion-card style="box-shadow: none;text-align: center;">
+          <ion-card-header>No more results to show</ion-card-header>
+        </ion-card>
+      </div>     
+
+    <ion-infinite-scroll  color="dark" (ionInfinite)="loadMoreHistory($event)" *ngIf="hasMoreData">
+      <ion-infinite-scroll-content 
+      loadingSpinner="bubbles"
+      loadingText="Loading more data..." color="dark"></ion-infinite-scroll-content>
+    </ion-infinite-scroll> 
+    </div>
+  </div>
+</ion-content>

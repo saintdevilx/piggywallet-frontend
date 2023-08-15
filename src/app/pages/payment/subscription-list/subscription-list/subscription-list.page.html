@@ -1,0 +1,51 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons>
+      <ion-back-button></ion-back-button>
+      <ion-title>Subscriptions</ion-title>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="white-bg"> 
+  <ion-list>
+    <ion-item *ngIf="subscriptions && subscriptions.length">
+      <ion-text color="medium" >Slide to left to reveal more options</ion-text>
+    </ion-item>    
+    <ion-item-sliding *ngFor="let subscription of subscriptions">    
+      <ion-item>
+        <ion-avatar slot="start">
+          <ngx-avatar src='{{subscription.saving_goal.image}}' name='{{ subscription.saving_goal.title | slice:0:10 }}'></ngx-avatar>
+        </ion-avatar>
+        <ion-label>
+          <ion-text class="fw-400">{{ subscription.saving_goal.title }}</ion-text>            
+          <h2>
+            <ion-text color="medium">₹ {{ subscription.saving_goal.deduction_amount }} / {{ subscription.saving_goal.deposit_frequency == 7 ? 'week': ( subscription.saving_goal.deposit_frequency == 30 ? 'month' : 'day')  }}</ion-text>
+          </h2>          
+        </ion-label>
+        <ion-badge color="{{ subscription.status == 'PENDING' ? 'warning' : (subscription.status == 'ACTIVE' ? 'success' : 'danger' )  }}">{{subscription.status}}</ion-badge>
+      </ion-item>
+      <ion-item-options>
+        <ion-item-option color="light" (click)="cancelSubscription($event, subscription.pk)">
+          <ion-icon name='close'></ion-icon>
+          <ion-text>Unsubscribe</ion-text>
+        </ion-item-option>
+        <ion-item-option color="light" (click)="gotoSavingGoal($event, subscription.saving_goal)">
+          <ion-icon></ion-icon>
+          <ion-text>View</ion-text>
+        </ion-item-option>        
+      </ion-item-options>
+    </ion-item-sliding>
+    <app-empty-state empty_text="No subscription found" *ngIf="subscriptions && !subscriptions.length"></app-empty-state>
+  </ion-list>
+  <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>   
+  <div *ngIf="hasMore">
+    <ion-infinite-scroll (ionInfinite)="loadMoreData($event)">
+      <ion-infinite-scroll-content 
+      loadingSpinner="bubbles"
+      loadingText="Loading more data..."></ion-infinite-scroll-content>
+    </ion-infinite-scroll>
+  </div>   
+</ion-content>

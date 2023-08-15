@@ -1,0 +1,51 @@
+.reward-icon-avatar {
+    text-align: center;
+    width: 50px;
+    height: 50px;
+    font-size: 1.8rem;
+    display: block;
+    line-height: 50px;
+}
+ion-avatar.reward-avatar {
+    background: #FFF;
+    width: 50px;
+    height: 50px;
+    margin: 5px auto;
+}
+.gradient-arc {
+    background: #f8d843 !important;
+    background: -moz-linear-gradient(left,  #f4be2c 0%,#f8d843 58%,#f4be2c 58%,#f8d843 100%) !important;
+    background: -webkit-linear-gradient(left,  #f4be2c 0%,#f8d843 58%,#f4be2c 58%,#f8d843 100%) !important;
+    background: linear-gradient(to right,  #f4be2c 0%,#f8d843 58%,#f4be2c 58%,#f8d843 100%) !important;
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#1e5799', endColorstr='#7db9e8',GradientType=1 );
+}
+.reward-amount{
+    font-size: 1.25rem;
+    color: #444;
+    font-weight: 500;
+    margin-bottom: 5px;
+}
+ion-card.unopened {
+    /*background-image:url("src/assets/earned-reward.png");*/
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-color: #f6ca1a;
+    background-position: center;
+}
+ion-card .OPENED,
+ion-card .SUCCESS, 
+ion-card .PENDING,
+ion-card .opened{
+    /*background: url('src/assets/confetti.png');*/
+    position: absolute;
+    text-align: center;
+    width: 100%;
+    top: 15px;
+
+}
+.sc__canvas{
+    pointer-events: none;
+    position: absolute;
+    top: 0;
+    left: 0;
+}

@@ -1,0 +1,74 @@
+<!-- <ion-content class="registration-page">
+  <div>
+    <span class="coins-spl"> <img src="assets/coins.png" > </span>
+      <div class="brand-sec">
+        <img src="assets/logo.png" class="logo">
+        <h1>Welcome to 
+           <span>My Piggy Wallet</span>
+        </h1>
+    </div>
+  </div>
+  <div >&nbsp;</div>
+  <div class="registration-block">
+    <div class="ion-text-center">
+      <ion-text color="primary">Welcome to </ion-text>
+      <h1><ion-text color="primary">MyPiggywallet</ion-text></h1>
+    </div>    
+    <ion-card class="ion-no-margin purple-bg">
+      <form [formGroup]="registrationForm" (ngSubmit)="onSubmit()">
+        <ion-list>
+          <ion-item class="item-label font-size-20 ion-no-padding">
+            <ion-input hidden size="3" formControlName="country_code" value="91" style="width: 80px;"></ion-input>
+            <ion-text class="country-code">+91</ion-text>
+            <ion-input color="light" size="10" pattern="[0-9]*" (ionInput)="onPhoneNumberInput($event)" placeholder="Phone number" type="tel" formControlName="phone_number"></ion-input>
+          </ion-item>
+          <ion-item lines='none' class="small" *ngIf="errors?.phone_number">
+            <ion-text color="danger" *ngFor="let error of errors?.phone_number">{{error}}</ion-text>        
+          </ion-item>
+        </ion-list>
+        <div>
+          <ion-text color="color" class="small-label"><p>By continuing, you are indicating that you agree with <strong>Privacy Policy</strong> and <strong>Terms.</strong></p></ion-text>
+        </div>
+        <div>
+          <ion-icon name="arrow-forward-outline"></ion-icon>
+          <ion-icon name="arrow-forward-circle-outline"></ion-icon>
+          <ion-button id="register-phone-auth" size='large' shape='round' type="submit" [disabled]="!registrationForm.valid || isSubmitted " color="light" class="button-block">Get OTP 
+            <ion-spinner *ngIf="isSubmitted"></ion-spinner>
+            <ion-icon name="arrow-forward-outline"></ion-icon>
+          </ion-button>
+        </div>
+        <div id="register-phone-auth-container"></div>
+      </form>  
+    </ion-card>
+  </div>  
+</ion-content> -->
+<ion-content class="registration-page">
+  <span class="coins-spl"> <img src="assets/coins.png"> </span>
+  <div class="stick-bottom">
+    <div class="brand-sec">
+        <img src="assets/logo.png" class="logo">
+        <h1>Welcome to 
+          <span>My Piggy Wallet</span>
+        </h1>
+    </div>
+    <div class="ad-ph">
+        <form [formGroup]="registrationForm" (ngSubmit)="onSubmit()">
+            <div class="phon-fld">               
+                <ion-item class="item-label font-size-20 ion-no-padding">
+                  <ion-input hidden size="3" formControlName="country_code" value="91" style="width: 80px;"></ion-input>
+                  <ion-text class="country-code">+91</ion-text>
+                  <ion-input color="light" size="10" pattern="[0-9]*" (ionInput)="onPhoneNumberInput($event)" placeholder="Phone number" type="tel" formControlName="phone_number"></ion-input>
+                </ion-item>
+                <ion-item lines='none' class="small" *ngIf="errors?.phone_number">
+                  <ion-text color="danger" *ngFor="let error of errors?.phone_number">{{error}}</ion-text>        
+                </ion-item>              
+            </div>
+            <p>By continuing you are indicating that you agree with Privacy &amp; Policy </p>
+            <ion-button class="wht-btn" id="register-phone-auth" size='large' shape='round' type="submit" [disabled]="!registrationForm.valid || isSubmitted ">Get OTP 
+              <ion-spinner *ngIf="isSubmitted"></ion-spinner>              
+              <img  *ngIf="!isSubmitted" src="assets/btn-arrow.png" class="btn-arw">
+            </ion-button>            
+        </form>
+    </div>  
+  </div>
+</ion-content>

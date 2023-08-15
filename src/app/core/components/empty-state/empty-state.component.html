@@ -1,0 +1,9 @@
+<div class="ion-text-center">
+  <ion-img style='width:80px;margin-top:30px !important;margin:0 auto;' src='assets/not-found-pig.png'></ion-img>  
+  <ion-label color="medium">
+    <h5>
+      <ion-text *ngIf="empty_text.length">{{ empty_text }}</ion-text>
+      <ion-text *ngIf="!empty_text.length">No results found</ion-text>
+    </h5>
+  </ion-label>
+</div>

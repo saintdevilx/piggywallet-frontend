@@ -1,0 +1,95 @@
+<ion-card-content *ngIf="!options.enableBankAccountForm">
+  <ion-item style="--padding-start:0;">
+    <h2><ion-text class="full-width fw-500">Choose bank account or UPI</ion-text></h2>
+  </ion-item>
+  <ion-list lines='none' *ngIf="bankAccounts">
+    <ion-radio-group (ionChange)="selectBankAccount($event)" value="{{options.selectBankAccount}}">
+      <ion-item *ngFor="let bank_account of bankAccounts">
+        <ion-radio slot="start" value='{{ bank_account.pk }}'></ion-radio>         
+        <ngx-avatar src='{{ bank_account.image }}' name="{{ bank_account.bank_name }}" round='true'></ngx-avatar>        
+        <ion-label>                    
+          <ion-text>
+            <h2>{{ bank_account.account_holder_name || bank_account.upi_vpa }}</h2>
+          </ion-text>
+          <ion-note>{{ bank_account.account_no || "UPI" }}</ion-note>
+        </ion-label>
+      </ion-item>
+    </ion-radio-group>
+    <ion-item *ngIf="bankAccounts && !bankAccounts.length">
+      <ion-label class="ion-text-center">
+        <ion-text class="full-width small-label" color="medium">No bank account or UPI added</ion-text>
+      </ion-label>
+    </ion-item>     
+  </ion-list> 
+</ion-card-content>
+<ion-item lines='none' class="add-bank-control">
+  <ion-text slot="start" color="light" class="no-margin-right small-label">Bank accounts</ion-text>
+  <ion-button shape='round' class="box-shadow-purple no-margin-left" slot="end" expand='full' (click)="addBankAccount($event)">
+      <ion-icon name="add-circle-outline"></ion-icon>   
+      <ion-text class="ion-text-capitalize">Add Bank Account</ion-text>
+  </ion-button>
+</ion-item>  
+
+<ion-card class="big-round" *ngIf="options.enableBankAccountForm">  
+  <ion-item lines='none'>
+    <ion-text slot="start" color="dark">Add Bank Account</ion-text>
+    <ion-button class="close-btn" shape='round' color="primary" (click)="cancelBankAccountForm($event)" slot="end" >
+      <ion-icon name='close'></ion-icon>
+    </ion-button>
+  </ion-item>    
+  <ion-card-content>  
+    <ion-item lines='none'>
+      <ion-radio-group (ionChange)="changeAccountType($event)">
+        <ion-item lines='none'>
+          <ion-radio slot="start" value='bank'></ion-radio>
+          <ion-label>                    
+            <ion-text>Bank account</ion-text>
+          </ion-label>
+        </ion-item>
+        <ion-item lines='none' *ngIf="options?.UPIEnabled">
+          <ion-radio slot="start" value='upi'></ion-radio>
+          <ion-label>                    
+            <ion-text>UPI VPA</ion-text>
+          </ion-label>          
+        </ion-item>
+      </ion-radio-group>
+    </ion-item>
+
+    <form [formGroup]="bankAccountForm" (ngSubmit)="onSubmitForm($event)">
+      <div *ngIf="account_type === 'upi'">
+        <ion-item>
+          <ion-label position="floating" color="medium">UPI VPA (e.g. abc1234@vpa )</ion-label>
+          <ion-input type='text' required="true" formControlName="upi_vpa"></ion-input>
+        </ion-item>
+      </div>
+      <div *ngIf="account_type === 'bank'">
+        <ion-item>
+          <ion-label color="medium" position="floating">Bank account no</ion-label>
+          <ion-input type='text' required='true' formControlName="account_no"></ion-input>
+        </ion-item>      
+        <ion-item>
+          <ion-label color="medium" position="floating">Bank name</ion-label>
+          <ion-input required='true' disabled="true" [value]="bankDetail?.BANK" formControlName="bank_name"></ion-input>
+        </ion-item>      
+        <ion-item>
+          <ion-label color="medium" position="floating">IFSC code</ion-label>
+          <ion-input required='true' maxlength='11' minlength='11' (input)="getIFSCDetails($event)" formControlName="ifsc_code"></ion-input>
+          <ion-spinner slot="end" name="crescent" *ngIf="ifscPending"></ion-spinner>
+          <ion-note *ngIf="bankDetail">
+            <h2>
+              <ion-text class="small-label" color="medium">{{ bankDetail.ADDRESS }}</ion-text>
+            </h2>
+          </ion-note>
+        </ion-item>
+        <ion-item>
+          <ion-label color="medium" position="floating">Account holder name</ion-label>
+          <ion-input required='true' formControlName="account_holder_name"></ion-input>
+        </ion-item>
+      </div>
+
+      <ion-item *ngIf="account_type" lines='none' class="ion-padding">
+        <ion-button type="submit"  expand='full' [disabled]="(account_type==='bank' && !bankAccountForm.valid) || (account_type==='upi' && (!bankAccountForm.value.upi_vpa || bankAccountForm.value.upi_vpa.length<5))" class="full-width" shape='round' size='medium'>Add {{ account_type==='upi' ? "UPI " :'Bank Account' }}</ion-button>
+      </ion-item>
+    </form>
+  </ion-card-content>
+</ion-card>

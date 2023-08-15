@@ -1,0 +1,17 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
+    <ion-title>Notification</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-card *ngFor="let notification of notifications">
+    <ion-card-content></ion-card-content>
+  </ion-card>
+  <ion-card>
+    <app-empty-state class="margin-top-100" *ngIf="!notifications" [empty_text]="'No notification found'"></app-empty-state>
+  </ion-card>
+</ion-content>

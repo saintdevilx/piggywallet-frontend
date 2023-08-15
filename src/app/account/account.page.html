@@ -1,0 +1,78 @@
+<ion-content class="white-bg">
+  <ion-item lines='none'>
+    <ion-button fill='clear' [routerLink]="['/tabs/home']" routerLinkActive="router-link-active"  slot="start">
+      <ion-icon name="arrow-round-back"></ion-icon>
+    </ion-button>
+    <ion-button slot="end"  [routerLink]="['/user-profile']" routerLinkActive="router-link-active" fill='none' slot="end">
+      <ion-text color="primary">Edit</ion-text>
+      <ion-icon  color="primary" name='create' ></ion-icon>          
+    </ion-button>    
+  </ion-item>
+  
+  <ion-item class="ion-text-center">
+    <ion-label>      
+      <ngx-avatar [src]="user.image" *ngIf="user" [round]="true" name="{{ user?.first_name }} {{ user?.last_name }}"></ngx-avatar>
+      <ion-label>
+        <ion-text> 
+          <h2 *ngIf="user.first_name && user.first_name.length">{{ user?.first_name }} {{ user?.last_name }}</h2>
+          <h4 *ngIf="!user.first_name || !user.first_name.length" color="medium">No name</h4>
+        </ion-text>                
+        <ion-note>          
+          <ion-text color="medium">{{ user.phone_number ? user.phone_number : "o phone" }}</ion-text>
+          <h5><ion-text color="medium">{{ user?.email ? user.email : "No email" }}</ion-text></h5>          
+        </ion-note>
+      </ion-label>
+    </ion-label>
+  </ion-item>  
+  <ion-list style="padding-left: 20px;padding-top: 20px;">    
+    <ion-item lines='none' [routerLink]="['/saving-list']" routerLinkActive="router-link-active" >
+      <ion-icon slot="start" src='assets/piggy-bank.svg'></ion-icon>
+      <ion-label>
+        <h4> Saving goals</h4>
+        <ion-note>Saving goal to deposit money</ion-note>
+      </ion-label>
+    </ion-item>
+    <!-- <ion-item lines='none'>
+      <ion-icon slot="start" src='assets/debit-card.svg'></ion-icon>
+      <ion-label>
+        <h4> Payment method</h4>
+        <ion-note>Options to make and recieve money</ion-note>
+      </ion-label>      
+    </ion-item> -->
+    <ion-item lines='none' [routerLink]="['/ekyc-details']" routerLinkActive="router-link-active" >
+      <ion-avatar slot="start" item-left style="color: #65dc7f;">
+        <ion-img  src='assets/kyc.png'></ion-img>
+      </ion-avatar>
+      <ion-label >
+        <h4>eKYC details</h4>
+        <ion-note>KYC details - Know your customer</ion-note>
+      </ion-label>      
+    </ion-item>
+    <ion-item lines='none' [routerLink]="['/subscription-list']" routerLinkActive="router-link-active" >
+      <ion-icon slot="start" item-left style="color: #65dc7f;" src='assets/verified-shield.svg'></ion-icon>
+      <ion-label >
+        <h4>Auto Debit- subscriptions</h4>
+        <ion-note>Manage auto debit subscriptions</ion-note>
+      </ion-label>      
+    </ion-item>    
+
+    <p>&nbsp;</p>
+    <p>&nbsp;</p>    
+
+    <ion-item>
+      <h6>INFORMATION</h6>
+    </ion-item>  
+    <ion-item lines='none' class="footer">
+      <ion-label color="medium">
+        <a target='_blank' href="https://www.mypiggywallet.com/help-support/"><h5><ion-icon color="primary" name="help-circle"></ion-icon> <ion-text>Help and support</ion-text></h5></a>
+        <a target='_blank' href="https://www.mypiggywallet.com/privacy-policy/"><h5><ion-icon color="primary" name="lock"></ion-icon> <ion-text>Privacy and policy</ion-text></h5></a>
+        <a target='_blank' href="https://www.mypiggywallet.com/terms-conditions/"><h5><ion-icon color="primary" name="document"></ion-icon> <ion-text>Terms and conditions</ion-text></h5></a>
+      </ion-label>
+    </ion-item>
+    <ion-item lines='none' (click)="logout($event)">
+      <ion-icon slot="start" name="log-out"></ion-icon>
+      <ion-label><h4>Logout</h4></ion-label>
+    </ion-item>    
+  </ion-list> 
+  
+</ion-content>

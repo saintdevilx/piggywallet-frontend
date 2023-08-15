@@ -1,0 +1,18 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons>
+      <ion-back-button></ion-back-button>
+      <ion-title>Authorise Payment</ion-title>
+    </ion-buttons>    
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="white-bg">
+  <div *ngIf="paymentSubscription" id='autodebit-authorise-popup'>
+    <div class="ion-text-center screen-center">    
+      <p>Please wait</p>
+      <ion-spinner></ion-spinner>
+    </div>
+    <iframe id="autodebit-authorise-popup-iframe" *ngIf="paymentSubscription" onload='this.setAttribute("class","full-screen-popup");'></iframe>
+  </div>
+</ion-content>

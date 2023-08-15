@@ -1,0 +1,73 @@
+img.bg-elmnt {
+    position: absolute;
+    width: calc(100% + 30px );
+    top: -65px;
+    max-width: 1000px;
+}
+.otp-sec {
+    text-align: center;
+    padding: 0px 31px;
+    margin-top: 97px;
+}
+img.otp-icn {
+    width: 92px;
+}
+.otp-sec p {
+    color: #a657ff;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 21px;
+    margin-top: 13px;
+}
+span.tm-out {
+    font-size: 12px;
+    color: grey;
+    text-align: center;
+    display: block;
+    margin: 8px;
+}
+.sbt-btn {
+    --background: #ffffff;
+    border: none;
+    display: block;
+    font-weight: 600;
+    font-size: 19px;
+    text-transform: uppercase;
+    text-align: center;
+    width: -webkit-fill-available;
+    letter-spacing: 0.55px;
+    color: #a657ff;
+    box-shadow: 1px 5px 24px #a657ff54;
+    margin-bottom: 41px;
+    border-radius: 54px;
+    outline: none;
+    cursor: pointer;
+    margin-top: 38px;
+}
+
+.otp-sec .otp-input {
+    background: none;
+    border: none;
+    border-bottom: 1px solid #9c9c9c;
+    display: block;
+    width: -webkit-fill-available;
+    margin-top: 28px;
+    padding: 9px 10px;
+    font-size: 20px;
+    outline: none;
+    text-align: center;
+    font-size: 30px;
+    letter-spacing: 1.79rem;
+}
+.brand-logo {
+    text-align: center;
+}
+.brand-logo img {
+    width: 40px;
+    display: block;
+    margin: auto;
+}
+.brand-logo span {
+    color: grey;
+    font-size: 10px;
+}

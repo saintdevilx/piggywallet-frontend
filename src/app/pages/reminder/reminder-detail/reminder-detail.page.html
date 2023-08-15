@@ -1,0 +1,51 @@
+<ion-header>
+  <ion-toolbar class="purple-bg-color">
+    <ion-buttons>
+      <ion-button fill='clear' [routerLink]="['/tabs/home']" routerLinkActive="router-link-active" >
+        <ion-icon name="arrow-round-back"></ion-icon>
+      </ion-button>
+      <ion-title>Reminder</ion-title>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="purple-bg-color">
+  <ion-card class="big-round">
+    <ion-card-content>
+      <ion-item lines='none'>
+        <ngx-avatar class="pad-right-10" round='false' borderRadius='10' name='savingGoal| slice:0:10'></ngx-avatar>
+        <ion-label>
+          <ion-text class="fw-500 font-size-20">{{savingGoal.title}}</ion-text>
+          <h5><ion-text>₹{{savingGoal.current_amount}} of ₹{{ savingGoal.target_amount }}</ion-text></h5>
+        </ion-label>
+      </ion-item>
+      <ion-row class="pad-right-10 pad-left-10">
+        <ion-progress-bar style="height:10px;" value="{{ savingGoal.current_amount/savingGoal.target_amount }}"></ion-progress-bar>
+      </ion-row>
+      <ion-item lines='none'>
+        <ion-text slot="start">
+          {{ savingGoal.getDespositFrequency() }}
+        </ion-text>
+        <ion-text slot="end">
+          {{savingGoal.getDeductionMode()}}
+        </ion-text>
+      </ion-item>
+      <ion-item lines='none'>
+        <ion-text class="fw-500" slot="start">Time </ion-text>
+        <ion-text slot="end">{{ savingGoal?.time_left }} day{{ savingGoal?.time_left < 2 ? '' : 's' }} to go</ion-text>
+      </ion-item>
+      <ion-item lines='none'>
+        <ion-text class="fw-500" slot="start">Deposit</ion-text>
+        <ion-text slot="end" class="font-size-20 fw-500" color="primary"> ₹{{ savingGoal.deduction_amount }}</ion-text>
+      </ion-item>      
+    </ion-card-content>
+  </ion-card>
+  <div class="ion-text-center"><ion-button (click)="goPay($event)"  shape='round' color="success">Continue to Pay</ion-button></div>
+</ion-content>
+<ion-footer>
+  <div class="ion-text-center">
+    <ion-button fill='outline' shape='round' [routerLink]="['/tabs/home']" routerLinkActive="router-link-active" >
+      <ion-text color="primary">Home <ion-icon name="home"></ion-icon></ion-text>
+    </ion-button>
+  </div>  
+</ion-footer>

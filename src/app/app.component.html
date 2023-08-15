@@ -1,0 +1,33 @@
+<header *ngIf="notMobile" class="top-nav-bar">    
+    <ion-item lines='none' class="top-nav-bar-list">
+      <ion-title class='app-title'>My Piggy Wallet <ion-icon src='assets/piggy-bank.svg'></ion-icon></ion-title>
+      <div *ngIf="loggedIn">
+        <ion-button fill='clear' [routerLink]="['/tabs/home']" routerLinkActive="router-link-active" >
+          <ion-icon name='home'></ion-icon>
+          <ion-label>Home</ion-label>
+        </ion-button>
+        <ion-button color="medium" fill='clear' [routerLink]="['/tabs/history']">
+          <ion-icon slot='start' src='assets/transfer.svg'></ion-icon>
+          <ion-label>History</ion-label>
+        </ion-button>
+        <ion-button color="medium"  fill='clear' [routerLink]="['/tabs/account']">
+          <ion-icon slot='start' name='settings'></ion-icon>
+          <ion-label>Settings</ion-label>
+        </ion-button>          
+      </div>
+      <div *ngIf="loggedIn" slot="end">
+        <ion-button color="medium" [routerLink]="['/notification']" routerLinkActive="router-link-active"  slot="end" fill='clear'>
+          <ion-icon slot='start' name='notifications'></ion-icon>
+          <ion-label>Notification</ion-label>        
+        </ion-button>         
+        <ion-button color="medium" [routerLink]="['/user-profile']" routerLinkActive="router-link-active"  slot="end" fill='clear'>
+          <ion-icon slot='start' name='person'></ion-icon>
+          <ion-label>user</ion-label>        
+        </ion-button>           
+      </div>
+    </ion-item>
+  </header>
+<ion-app >   
+
+  <ion-router-outlet  (activate)="onActivateRoute($event)"></ion-router-outlet>
+</ion-app>

@@ -1,0 +1,97 @@
+<!-- <ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button text="Back"></ion-back-button>
+    </ion-buttons>
+    <ion-text class="big-bold-text ion-text-center">               
+      <ion-icon name="wallet"></ion-icon> Deposit
+    </ion-text>    
+  </ion-toolbar>  
+</ion-header>
+
+<ion-content>
+  <div padding></div>
+  <form [formGroup]="savingGoalForm" (ngSubmit)="onSubmit()">
+    <ion-grid>
+      <ion-list>
+        <ion-item block full>
+          <ion-label color="medium" position="floating">Saving for</ion-label>
+          <ion-input formControlName='title' required="true" block full type="text"></ion-input>      
+        </ion-item>
+
+        <ion-item>
+          <ion-label color="medium" position="floating">Goal to save</ion-label>
+          <div class='width-100'>
+            <div class="curr-symbol">₹</div>
+            <ion-input required="true" (input)="calculateDeductionAmount($event)"  [(ngModel)]="savingAmount" formControlName="target_amount" placeholderx="Goal to save" type="number" max="100000" min="100"></ion-input>                
+          </div>
+        </ion-item>
+    
+        <ion-item>
+          <ion-label color="medium" position="floating">Timeline</ion-label>
+          <ion-input min="{{ minDate | date:'yyyy-mm-dd' }}" required="true" (ionChange)="calculateDeductionAmount($event)"  [(ngModel)]="target_date" formControlName="target_date" placeholderx="Timeline" type="date"></ion-input>      
+        </ion-item>
+      </ion-list>
+      <div padding></div>
+      <div>
+        <ion-label padding color="medium">How often you want to deposit?</ion-label>      
+        <ion-list lines='none'>
+          <ion-radio-group (ionChange)="calculateDeductionAmount($event)"  formControlName="frequency" [(ngModel)]="frequency" required="true" >
+            <ion-item>     
+              <ion-label>Daily</ion-label>     
+              <ion-radio slot="start" value='1'></ion-radio>
+            </ion-item>
+            <ion-item *ngIf="number_of_days >= 7">     
+              <ion-label>Weekly</ion-label>     
+              <ion-radio checked="true" slot="start"  value='7'></ion-radio>
+            </ion-item>
+            <ion-item *ngIf="number_of_days >= 30">     
+              <ion-label>Monthly</ion-label>     
+              <ion-radio slot="start"  value='30'></ion-radio>
+            </ion-item>
+          </ion-radio-group>
+        </ion-list>
+        <div padding></div>
+      </div>
+      <div>
+        <ion-label padding color="medium" position="floating">How do you prefer to pay?</ion-label>
+        <ion-radio-group formControlName="deduction_mode">
+          <ion-row>
+            <ion-item lines="none">
+              <ion-label>Auto debit</ion-label>
+              <ion-radio slot="start" value="0"></ion-radio>
+            </ion-item>
+            <ion-item lines="none">
+              <ion-label>Manual</ion-label>
+              <ion-radio slot="start" value="1"></ion-radio>
+            </ion-item>
+          </ion-row>
+        </ion-radio-group>
+        <div padding></div>
+      </div>
+
+      <div *ngIf="savingAmount && frequency">
+        <ion-item lines='none'>
+            <ion-text slot="start" color="medium">You will deposit</ion-text>
+            <ion-button slot="end" (click)="toggleEditDeducationInput()" color="primary" fill="none"> 
+              <span *ngIf="!editDeducation"><ion-icon name="create"></ion-icon> Edit</span>
+              <span *ngIf="editDeducation"><ion-icon name="checkmark"></ion-icon> Done</span>
+            </ion-button>
+        </ion-item>
+        <ion-item class="" *ngIf="!editDeducation">
+          <ion-text>
+            ₹ {{deductionAmount | number:"1.2-2" }} <ion-text color="medium">every {{ frequency == 1 ? 'day' : (frequency == 7 ? " week" : " month" ) }}  for {{number_of_deducations}} {{ frequency == 1 ? 'day' : (frequency == 7 ? " week" : " month" ) }}</ion-text>
+          </ion-text>            
+        </ion-item>
+        <ion-item *ngIf="editDeducation">
+          <ion-text slot="start">₹</ion-text>
+          <ion-input style="width:90%;" [(ngModel)]="deductionAmount" formControlName="deductionAmount" value='{{deductionAmount}}' class="no-border-input"></ion-input>
+        </ion-item>
+      </div>      
+      
+      <div padding class=" ion-text-center">
+        <ion-button  type="submit"  routerLinkActive="router-link-active"  shape="round"  [disabled]="!savingGoalForm.valid||submitted" color="primary">Next <ion-spinner *ngIf="submitted"></ion-spinner> </ion-button>
+      </div>
+    </ion-grid>
+  </form>
+</ion-content> -->

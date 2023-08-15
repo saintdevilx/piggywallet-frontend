@@ -1,0 +1,51 @@
+  <div>    
+      <div *ngFor="let transactions of historyResult ">
+        <!-- <ion-item-divider sticky='true'>
+          <ion-label class="big-bold-text" color="dark">{{ transactions[0] | date:"mediumDate" }}</ion-label>
+        </ion-item-divider>   -->
+        <div *ngFor="let item of transactions[1]" class="history-card">
+          <ion-card class="ion-no-margin" (click)="transactionDetail($event, item)">
+            <ion-card-content class="transaction-block ion-no-padding">
+              <ion-grid>
+                <ion-row class="full-width small">
+                  <ion-col size=2>
+                    <ion-icon class="transaction-type" src='assets/deposit-outline.svg' *ngIf="item.type == 'CREDIT' "></ion-icon>
+                    <ion-icon class="transaction-type"src='assets/withdraw-outline.svg' *ngIf="item.type == 'DEBIT' "></ion-icon>
+                  </ion-col>
+                  <ion-col size="6">
+                    <ion-text class="fw-400">
+                      <ion-text class="fw-700" color="dark">{{ item.type == 'CREDIT' ? "Deposited" : "Withdrawn" }}</ion-text>
+                      <h5>
+                        <ion-text class="full-width " color="dark">{{ item.saving_goal.title }}</ion-text>
+                      </h5>
+                      <h3><ion-text *ngIf="item.status != 'SUCCESS'" color="{{ item.type === 'CREDIT' ? 'success' : 'danger' }}" >{{ item.type === "CREDIT" ? "+" : "-" }} ₹ {{ item.amount }}</ion-text></h3>
+                      <ion-text class="small-label" color="{{ item.status === 'SUCCESS' ? 'success' : (item.status === 'PENDING' ? 'warning' : 'danger') }}">                        
+                        <ion-icon name="time" *ngIf="item.status === 'PENDING'"></ion-icon>
+                        <ion-icon name="close-circle-outline" *ngIf="item.status === 'FAILED' || item.status === 'CANCELLED'"></ion-icon>
+                        <ion-text color="success" *ngIf="item.status === 'SUCCESS'"> {{ item.type | titlecase }}ed {{ item.type == 'CREDIT' ? 'to' : 'from' }} <ion-icon name="wallet"></ion-icon></ion-text>                  
+                        <ion-text color="{{item.status==='PENDING' ? warning : danger }}" *ngIf="item.status != 'SUCCESS'">{{ item.status }}</ion-text>
+                      </ion-text>                   
+                    </ion-text>
+                  </ion-col>
+                  <ion-col size="4" class=" ion-text-right">
+                    <h5>
+                      <ion-text color="primary" class="fw-500 small-label" >{{ item.created_at | date: 'mediumDate' }}</ion-text>
+                    </h5>                    
+                    <ion-text class="fw-600 oneline-text-wrap" color="dark">
+                    <ion-text *ngIf="item.status === 'SUCCESS'" color="{{ item.type === 'CREDIT' ? 'success' : 'danger' }}" >{{ item.type === "CREDIT" ? "+" : "-" }} ₹ {{ item.amount }}</ion-text>
+                    <h5>
+                      <ion-text class="small-label ">{{ item.created_at | date: 'shortTime' }}</ion-text>
+                    </h5>                    
+                    </ion-text>    
+                  </ion-col>                          
+                </ion-row>
+              </ion-grid>
+
+            </ion-card-content>
+          </ion-card>
+        </div>
+      </div>
+      <div *ngIf="historyResultList && !historyResultList.length">
+        <app-empty-state  empty_text="No transaction history found "></app-empty-state>
+      </div>
+  </div>

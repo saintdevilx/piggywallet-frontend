@@ -1,0 +1,14 @@
+<ion-list lines='none'> 
+  <ion-item (click)="editDtails(savingGoal.pk , $event)">
+    <ion-text slot="start">Edit</ion-text>
+    <ion-icon slot="end" name='create'></ion-icon>
+  </ion-item>
+  <ion-item (click)="closeSaving(savingGoal.pk, $event)" *ngIf="savingGoal.status === 'In Progress'">
+    <ion-text slot="start">Close Saving</ion-text>
+    <ion-icon slot="end" src='assets/heart-break.svg'></ion-icon>
+  </ion-item>
+  <ion-item (click)="withdraw($event)">
+      <ion-text slot="start">Withdraw</ion-text>
+      <ion-icon slot="end" src='assets/withdraw.svg'></ion-icon>
+    </ion-item>  
+</ion-list>

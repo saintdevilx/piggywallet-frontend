@@ -1,0 +1,18 @@
+<div style='padding-top:0;' class="payment-summary" lines='none'>
+  <ion-item class="small" lines='none'>
+    <div>
+      <ion-text hidden color="medium">One more step closer to your dream</ion-text>
+      <div class="summary-row">
+        <ion-text color="dark" class="fw-500 font-size-20"> {{ summaryData.title }}</ion-text>          
+      </div>
+      <div class="summary-row">
+        <ion-text color="primary" class="mid-size-text fw-600" > ₹ {{ summaryData.deduction_amount | number }}</ion-text>          
+      </div>
+      <div class="summary-row">
+        <ion-text color="medium" class="small-label"> {{ summaryData?.time_left }} day{{ summaryData?.time_left < 2 ? '' : 's' }} to go</ion-text>          
+      </div>
+    </div>
+    <!-- <ion-icon slot="end" style="font-size: 70px;" src='assets/red-rupee-coin.svg'></ion-icon> -->
+    <img slot="end" src="assets/green-inr.png" width="50" />
+  </ion-item>
+</div>

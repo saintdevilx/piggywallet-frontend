@@ -1,0 +1,82 @@
+<form [formGroup]="userProfileForm" (ngSubmit)="onSubmit($event)" *ngIf="userProfileForm">
+  <div *ngIf="!enableManualMode">    
+    <ion-card-content class="ion-text-center">
+      Connect your google account to instantly verify your email.
+    </ion-card-content>
+    <ion-item lines='none'>   
+      <ion-button [disabled]="statusPending.status" style="margin:0 auto;" (click)="googleLogin($event)" size='medium' fill='outline'> <ion-icon src='assets/google-logo-color.svg'></ion-icon> Connect google account</ion-button>
+    </ion-item> 
+    <div class="ion-text-center"><ion-spinner *ngIf="statusPending.status"></ion-spinner></div>
+    <ion-text *ngFor="let error of errors">
+      <h2 color="danger" style="color: #f25454 !important;">{{ error.error.message }}</h2>
+    </ion-text>
+    <ion-item class="small" lines='none'></ion-item>
+  </div>
+     
+
+  <ion-list *ngIf="enableManualMode">
+    <ion-item class="small ion-text-center"  lines='none' ></ion-item>                 
+    
+    <h5><ngx-avatar [src]="image_url" [name]="image_url?'':'N A'"></ngx-avatar></h5>
+    <div class="ion-text-center">  
+      <ion-text *ngIf="!image_url">Choose a picture to upload</ion-text>
+      <ion-text *ngIf="image_url">Change picture</ion-text>              
+    </div>
+    <h5 class="ion-text-center"><ion-spinner *ngIf="uploading"></ion-spinner></h5>
+    <ion-input type='file' (change)="selectFile($event)" accept="image/*" style="position: absolute;opacity: 0;top: 0;height: 120px;"></ion-input>
+    <div *ngIf="imageSelected">
+      <image-cropper
+      [imageChangedEvent]="imageChangedEvent"
+      [maintainAspectRatio]="true"
+      [aspectRatio]="1 / 1"
+      [resizeToWidth]="100"
+      format="png"
+      outputType='file'
+      autoCrop=false
+      cropperMinWidth="100"
+      cropperMinHeight="100"
+      (imageCropped)="imageCropped($event)"
+      (imageLoaded)="imageLoaded()"
+      (cropperReady)="cropperReady()"
+      (loadImageFailed)="loadImageFailed()"
+      ></image-cropper>
+    <ion-button (click)="uploadImage($event)">Change Picture</ion-button>
+  </div>
+    <ion-item class="small"  lines='none' ></ion-item>  
+    <ion-item>
+      <ion-icon slot="start" name="person"></ion-icon>
+      <div>
+        <ion-label position='floating'> Full name</ion-label>
+        <ion-input pattern="[a-zA-Z\s]*" required='true' formControlName="full_name"></ion-input>
+      </div>
+    </ion-item>
+    <h5 color="danger" *ngIf="f && f.full_name && f.full_name.length > 0 && f.full_name.errors">Invalid name</h5>
+    <ion-item>
+      <ion-icon slot="start" name="mail"></ion-icon>
+      <div>
+        <ion-label position='floating' > Email</ion-label>
+        <ion-input [disabled]="user&&user.email_verified" inputmode='email' required='true' type='email' formControlName="email"  ></ion-input>        
+      </div>
+      <ion-icon slot="end" color="success" *ngIf="user&&user.email_verified" name="checkmark-circle"></ion-icon>      
+    </ion-item> 
+    <div class="ion-padding">
+      <div *ngIf="!emailSent && user.email && !user.email_verified">
+        <div>
+          <ion-text color="medium">Verify your email by clicking on the link sent on your email. if you did not get any email.</ion-text>
+          <ion-button [disabled]='emailSent' (click)="resendVerifyEmail($event)" size='small' fill='clear' color="success" *ngIf="user&& user.email && !user.email_verified">resend email</ion-button>
+        </div>      
+      </div>
+      <div *ngIf="!user.email && f.full_name.value && f.email.value && !user.email_verified">
+        <div> You will get an email with verification link. Verify your email from the link you will get in your email. </div>
+      </div>
+    </div>
+    <ion-item lines='none' class="small"></ion-item>  
+    <ion-button type='submit' shape='round' expand='full' [disabled]="!userProfileForm.valid||userProfileForm.value.submitted">Save <ion-spinner *ngIf="userProfileForm.value.submitted"></ion-spinner></ion-button>   
+
+  </ion-list>
+  <div class="ion-text-center">
+    <p></p>
+    <ion-text color="primary"><h2 (click)="toggleOtherEmail($event)"> <span *ngIf="enableManualMode">Verify using Google instantly</span> <span *ngIf="!enableManualMode"> Other email account</span></h2>      </ion-text>
+    <p></p>
+  </div>    
+</form>

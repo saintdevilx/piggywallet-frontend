@@ -1,0 +1,61 @@
+<ion-header>
+  <ion-toolbar class="white-bg">
+    <ion-buttons>
+      <ion-back-button></ion-back-button>
+      <ion-title>Aspirations</ion-title>
+    </ion-buttons>    
+  </ion-toolbar>
+</ion-header>
+
+<ion-content style="position: relative;z-index: 10;" class="aspirations aspiration-list-container">
+  <div style="position: relative; z-index: 2;">  
+    <ion-card class="ion-text-center box-shadow-purple" *ngFor="let aspiration of aspirations" (click)="viewAspirationDetail(aspiration)">  
+      <ion-card-content>
+        <ion-item lines='none'>
+          <ion-avatar slot="start">
+            <ion-img [src]='aspiration.icon_image'></ion-img>
+          </ion-avatar>
+          <ion-label>
+            <h2>
+              <ion-text class="mid-size-text" color="primary">{{aspiration.title}}</ion-text>
+            </h2>
+            <ion-text class="small-label" color="medium">View more   <ion-icon name="arrow-dropright"></ion-icon></ion-text>
+          </ion-label>
+        </ion-item>
+      </ion-card-content>
+    </ion-card>
+    <div *ngIf="aspirations !=null && hasMore">
+      <ion-infinite-scroll (ionInfinite)="loadMoreData($event)">
+        <ion-infinite-scroll-content 
+        loadingSpinner="bubbles"
+        loadingText="Loading more data..."></ion-infinite-scroll-content>
+      </ion-infinite-scroll>
+    </div>  
+    <div *ngIf="aspirations == null">
+      <ion-card>
+        <ion-card-content>
+          <ion-item lines='none'>
+            <ion-thumbnail slot="start">
+              <ion-skeleton-text animated></ion-skeleton-text>
+            </ion-thumbnail>
+            <ion-label>
+              <ion-skeleton-text animated></ion-skeleton-text>
+              <ion-skeleton-text animated style="width: 30%;"></ion-skeleton-text>
+            </ion-label>
+          </ion-item>
+        </ion-card-content>
+      </ion-card>
+    </div>
+    <!-- <div *ngIf="!hasMore && aspirations && aspirations.length">    
+        <ion-card style="box-shadow: none;text-align: center;">
+          <ion-card-header>No more results to show</ion-card-header>
+        </ion-card>
+    </div>    -->
+    
+  </div>
+  <img src="assets/bg-prple-2.png" style="width: 103%;max-width: unset;position: fixed;bottom: -12%;right: -3%;z-index: 0;">  
+  <app-empty-state empty_text="No aspiration found." *ngIf="aspirations && !aspirations.length"></app-empty-state>
+  <ion-refresher slot="fixed" (ionRefresh)="onRefresh($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>   
+</ion-content>

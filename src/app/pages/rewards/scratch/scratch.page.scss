@@ -1,0 +1,23 @@
+.scratched .unopened{
+    background: none !important;
+}
+.uninit .unopened {
+    --color: #FFF;
+    color: #FFF;
+}
+
+.uninit .unopened .reward-amount {
+    color: #FFF;
+}
+
+.uninit .unopened ion-avatar.reward-avatar {
+    background: #FFF !important;
+}
+
+ion-footer.no-border{
+    margin-bottom: 50px;
+}
+ion-footer.no-border::before{
+    content:"";
+    background:none;
+}

@@ -1,0 +1,109 @@
+.saving-form ion-radio-group ion-card {
+    padding: 10px;
+}
+.saving-form ion-radio-group ion-label:not(.multi-line) > * {
+    white-space: nowrap !important;
+}
+ion-icon[name=checkmark-circle] {
+    opacity: 0;
+    position: absolute;
+    font-size: 20px;
+    right: 10px;
+}
+
+.saving-form ion-radio.radio-checked + ion-label ion-icon[name=checkmark-circle] {
+    opacity: 1;
+    color: #58c254;
+}
+
+.saving-form .prev-button{
+    margin-top: -55px;
+    margin-left: 20px;
+}
+.prev-button ion-button::after {
+    content: "";
+    border: 0;
+}
+.saving-form ion-card.big-round {
+    padding-bottom: 50px;
+    box-shadow: 23px 3px 62px #a657ff6b;
+}
+.saving-form ion-button{
+    margin-top: -5px;
+    position: relative;
+    margin-right: 30px;
+}
+.saving-form ion-button ion-icon{
+    font-size: 20px;
+    color: #6601d4;
+}
+
+ion-chip.ion-color-selected{
+    background: #FFFFFF;
+    color: #6601d4;
+}
+
+.saving-form ion-radio{
+    position: absolute;
+    opacity: 0;
+    width: 100%;
+    height: 100%;
+    border-radius: 0;
+}
+.saving-goal-block ion-card {
+    box-shadow: 1px 4px 14px #a657ff47 !important;
+  }
+
+.saving-form ion-button::after {
+    content: "";
+    border: 7px solid rgba(250, 250, 250, 0.9);
+    z-index: 100000;
+    position: absolute;
+    top: -7px;
+    left: -7px;
+    width: 98%;
+    height: 98%;
+    border-radius: 50%;
+    opacity: 0.5;
+}
+  .saving-form ion-button{
+      margin-top: -5px;
+      position: relative;
+      margin-right: 30px;
+  }
+  .saving-form ion-button ion-icon{
+      font-size: 20px;
+      color: #6601d4;
+  }
+  
+  ion-chip.ion-color-selected{
+      background: #FFFFFF;
+      color: #6601d4;
+  }
+  
+  .saving-form ion-radio{
+      position: absolute;
+      opacity: 0;
+      width: 100%;
+      height: 100%;
+      border-radius: 0;
+  }  
+
+  @media(max-width: 374px){
+    .saving-form ion-button {
+        height: 45px !important;
+        margin-top: 0 !important;
+    }
+}
+
+.saving-form ion-grid {
+    margin-bottom: 100px;
+}
+.saving-form ion-avatar{
+    margin-top: -15px;
+    position: absolute;
+    z-index: 100;
+    left: calc(50% - 27px);
+    border: 5px solid #a657ff;
+    box-shadow: 1px 1px 7px #a758ff;
+}

@@ -1,0 +1,32 @@
+ion-content{
+    --background:#f2f2f2;
+    --ion-item-background: transparent;
+}
+.create-form img{
+    position: absolute;
+    bottom: 0;
+    width: 50px;
+    right:10px;
+}
+
+.purple-circle-bg{
+    content: "";
+    border: 30px solid purple;
+    width: 150px;
+    height: 150px;
+    position: absolute;
+    border-radius: 50%;
+    z-index: 1000;
+}
+
+.saving-form ion-grid {
+    margin-bottom: 100px;
+}
+.saving-form ion-avatar{
+    margin: 10px auto;
+    position: absolute;
+    z-index: 100;
+    left: calc(50% - 27px);
+    border: 5px solid #a657ff;
+    box-shadow: 1px 1px 7px #a758ff;
+}

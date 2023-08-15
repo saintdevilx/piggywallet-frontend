@@ -1,0 +1,19 @@
+
+.history-filter{
+    margin-bottom:25px !important;
+}
+
+.history-list {
+    margin-top: -125px;
+    z-index: 0;
+    padding-top: 110px;
+}
+.history-filter-block{
+    z-index: 10;
+    position: relative;
+}
+
+ion-button.round-btn{
+    --padding-start: 25px;
+    --padding-end: 25px;
+}

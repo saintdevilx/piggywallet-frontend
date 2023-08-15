@@ -1,0 +1,219 @@
+<ion-content>
+  <!-- Refresh-->
+  <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>  
+  <!-- top nav -->
+
+
+  <!--  testing era start-->
+  <div class="main-container">
+    <div class="fst-sec">
+       <div class="lft-sec">
+            <p>Total Saving</p>
+            <h1><span> ₹ {{ userDetail.current_deposit }} </span></h1>
+       </div>
+       <img src="assets/icons/mpw-icon-512x512.png" class="hand-mny">
+    </div>
+    <div class="tiles">
+        <div class="flx" (click)="gotoSavingGoalLis($event, 'achieved')" >
+            <div class="inr-fx">
+                <span>{{ userDetail.achieved_goal }}</span>
+                <p>Achieved</p>
+            </div>
+        </div>
+        <div class="flx" (click)="gotoSavingGoalLis($event, 'inprogress')" >
+             <div class="inr-fx">
+                <span>{{ userDetail.in_progress_goal }}</span>
+                <p>In Progress</p>
+            </div>
+        </div>
+        <div class="flx p-rel">
+          <a [routerLink]="['/rewards']" routerLinkActive="router-link-active" >
+            <div class="inr-fx">
+              <span><img src="assets/rupee-yellow.png" class="r-icon" width="18"></span>
+              <ion-text color="light"><p>Earn &amp; Save</p></ion-text>
+              <ion-badge *ngIf="userDetail?.reward" style="position: absolute;" color="danger">new</ion-badge>              
+            </div>
+            <ion-ripple-effect></ion-ripple-effect>
+          </a>
+        </div>
+    </div>
+
+    <ion-card-content class="ion-no-padding alert-to-action"  *ngIf="userDetail?.reward_count">
+      <ion-item lines='none' [routerLink]="['/rewards']" routerLinkActive="router-link-active" >
+        <ion-icon slot="start" class="big-bold-text" src='assets/trophy.svg'></ion-icon>
+        <ion-label class="ion-no-margin">
+          <ion-text>You have unopened reward</ion-text>
+          <h2>
+            <ion-text color="medium" class="small-label">Surprise is waiting for you</ion-text>
+          </h2>
+        </ion-label>
+      </ion-item>
+    </ion-card-content>
+
+    <ion-card-content class="ion-no-padding alert-to-action" *ngIf=" settings?.kycOnHome && kycRequired">
+      <ion-item lines='none' [routerLink]="['/ekyc-details']" routerLinkActive="router-link-active" >
+        <ion-avatar slot="start">
+          <img src="assets/kyc.png" />
+        </ion-avatar>
+        <ion-label class="ion-no-margin">  
+          <ion-text>Complete your KYC </ion-text>
+          <h2>
+            <ion-text color="medium" class="small-label">
+              <ion-icon name='time'></ion-icon>
+              in 2 mintues
+            </ion-text>
+          </h2>
+        </ion-label>
+      </ion-item>
+    </ion-card-content>      
+
+    <ion-card-content class="ion-no-padding alert-to-action" *ngIf="userDetail && !userDetail?.email_verified">
+      <ion-item lines='none' [routerLink]="['/user-profile']" routerLinkActive="router-link-active" >       
+        <ion-icon slot="start" name='mail' color="tertiary" class="big-bold-text"></ion-icon>
+        <ion-label class="ion-no-margin">
+          <ion-text *ngIf="!userDetail.email_verified && userDetail.first_name">Verify your email <ion-icon name=''></ion-icon></ion-text>
+          <ion-text *ngIf="!userDetail.email_verified && !userDetail.first_name">Complete your profile <ion-icon name=''></ion-icon></ion-text>
+          <h2>
+            <ion-text *ngIf="!userDetail.email_verified && userDetail.first_name" color="medium" class="small-label">Click on the link sent on your email or resend email.</ion-text>
+            <ion-text *ngIf="!userDetail.email_verified && !userDetail.first_name" color="medium" class="small-label">lets get started.</ion-text>
+          </h2>
+        </ion-label>
+      </ion-item>
+    </ion-card-content>
+
+
+    <div class="sav-gl">
+      <ion-item lines='none'>
+        <ion-text slot="start" color="dark" class="fw-500">Saving Goals</ion-text>
+        <ion-button fill='none' size='small' class="color-purple-dark" slot='end' [routerLink]="['/create-saving']" routerLinkActive="router-link-active" >         
+          <ion-icon name='add-circle-outline'></ion-icon> Create new goal
+        </ion-button>
+      </ion-item>
+
+        <div *ngIf="savingGoals && !savingGoals.length">
+          <ion-card-content class="ion-text-center">
+            <img src="assets/not-found-pig.png" style="max-width: 90px;margin:0 auto;"/>
+            <h5>
+              <ion-text color='medium'>Sorry, you do not have any saving goal.</ion-text>
+            </h5>
+            <ion-item lines='none'>
+              <ion-button fill='none' [routerLink]="['/create-saving']" routerLinkActive="router-link-active" >
+                <ion-icon color="primary" name="add-circle-outline"></ion-icon> <ion-text color="primary" >Create goal</ion-text>
+              </ion-button>
+              <ion-button fill='none' [routerLink]="['/aspiration-list']" routerLinkActive="router-link-active" >
+                <ion-icon color="primary"  name="search"></ion-icon> <ion-text color="primary" >Find aspirations</ion-text>
+              </ion-button>
+            </ion-item>
+          </ion-card-content>
+        </div>            
+        
+        <div *ngIf="!savingGoals" class="ion-padding ion-margin">
+          <ion-card-content class="ion-text-center">           
+            <ion-skeleton-text animated style="margin: 0 auto;height: 50px;"></ion-skeleton-text>  
+          </ion-card-content>
+        </div>
+
+        <ion-slides pager="false" [options]="slideOpts" style="padding-left:2px;">
+          <ion-slide *ngFor="let item of savingGoals">
+            <app-saving-card class="pad-top-10 saving-goal-block pad-bottom-10 full-width" (click)="savingGoalDetail(item)" [savingGoal]='item'></app-saving-card>
+          </ion-slide>
+          <ion-slide *ngIf="savingGoals && savingHasNext" >
+            <div class="pad-top-10 full-width">
+              <ion-card style='box-shadow:1px 4px 14px #a657ff47;--box-shadow:1px 4px 14px #a657ff47;'>
+                <ion-card-content [routerLink]="['/saving-list']" routerLinkActive="router-link-active">
+                  <ngx-avatar name='A L L'></ngx-avatar>     
+                  <ion-item class="item md ion-focusable hydrated small item-lines-none" lines="none"></ion-item>                             
+                  <ion-text>View all savings</ion-text>
+                  <ion-item lines='none' class="small"></ion-item> 
+                </ion-card-content>
+              </ion-card>
+            </div>
+          </ion-slide>
+        </ion-slides>  
+    </div>
+    <ion-row *ngIf="settings?.feedbackOnHome || settings?.referFriendOptionOnHome" class="ion-padding ion-text-center" color="medium">
+      <ion-col *ngIf="settings.feedbackOnHome" style="border-right:1px solid #EEE;">
+        <a color="dark" [routerLink]="['/referral']" routerLinkActive="router-link-active">
+          <img src='assets/refer-frnd.png' />
+          <ion-text color="dark" class="">
+            Refer friends and earn upto ₹100
+          </ion-text>        
+        </a>
+      </ion-col>
+      <ion-col *ngIf="settings.referFriendOptionOnHome">
+        <a [routerLink]="['/offers']" routerLinkActive="router-link-active" >
+          <img src='assets/save-for-future.png' style="display: block; margin: 0 auto;" />
+          <ion-text class="" color="dark">Create saving &amp; get cashback *</ion-text>
+        </a>
+      </ion-col>
+    </ion-row>        
+    <div class="aspr">
+        <ion-item lines='none' style="--background:transparent;">
+          <ion-text class="fw-500 font-size-20 " color="light">Aspirations</ion-text>
+          <ion-button slot="end" [routerLink]="['/aspiration-list']" routerLinkActive="router-link-active"  fill='none' class="color-purple-dark">
+            <ion-text color="light">View all</ion-text></ion-button>
+        </ion-item>          
+        <ion-row>
+          <ion-col size='6' *ngFor="let aspiration of aspirations">  
+            <div class="no-margin aspiration-block" (click)="viewAspirationDetail(aspiration)">
+              <div class="as-inr">
+                <ion-item class="ion-no-padding" lines='none'>
+                  <ion-avatar slot="start">
+                    <ion-img src='{{aspiration?.icon_image}}' *ngIf="aspiration.icon_image"></ion-img>
+                  </ion-avatar>                  
+                  <ion-text color="primary" class='text-block fw-500 font-size-20'>{{ aspiration.title | slice:0:15 }}</ion-text>
+                </ion-item>
+              </div>
+            </div>
+          </ion-col>
+        </ion-row>        
+        <ion-row *ngIf="!aspirations">
+          <ion-col size="6">
+            <div class="no-margin aspiration-block">
+              <div class="as-inr">
+                <ion-skeleton-text animated style="height:30px"></ion-skeleton-text>
+              </div>
+            </div>
+          </ion-col>
+        </ion-row>
+    </div>
+    <ion-item class="small" lines='none'></ion-item>
+    <ion-item class="small" lines='none'></ion-item>
+    <div class="no-margin articles-list white-bg">
+      <ion-item lines='none'>
+        <ion-text class="fw-500 font-size-20 " color="primary"> Recent Articles </ion-text>  
+        <ion-button slot="end" (click)="viewAllBlogs($event)" fill='clear'>view all</ion-button>
+      </ion-item>      
+      <div>
+        <ion-slides pager="false" [options]="slideOpts2" *ngIf="blogPosts" >
+          <ion-slide *ngFor="let blogPost of blogPosts" (click)="openLink(blogPost.link)">
+            <ion-card>
+              <div class="article-image" >
+                <img src='{{ blogPost.featured_image.size_thumbnail }}'  *ngIf="blogPost.featured_image && blogPost.featured_image.size_thumbnail"/>
+                <img src='https://mypiggywallet.com/wp-content/uploads/2020/02/no-photo-150x150.png'  *ngIf="!blogPost.featured_image || !blogPost.featured_image.size_thumbnail"/>                
+              </div>
+              <ion-card-content class="ion-text-center">
+                <ion-text color="primary">{{ blogPost.title.rendered }}</ion-text>
+              </ion-card-content>
+            </ion-card>
+          </ion-slide>
+          <ion-slide *ngIf="!blogPosts.length">
+            <ion-card>
+              <div>
+                <ion-thumbnail  class="article-image full-width">
+                  <ion-skeleton-text animated></ion-skeleton-text>  
+                </ion-thumbnail>
+              </div>
+              <ion-card-content>
+                <ion-skeleton-text style="height:10px;" animated></ion-skeleton-text>
+              </ion-card-content>
+            </ion-card>
+          </ion-slide>
+        </ion-slides>
+      </div>
+    </div>
+</div>
+  <!-- testing era end-->
+</ion-content>

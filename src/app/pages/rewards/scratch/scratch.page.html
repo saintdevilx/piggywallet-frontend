@@ -1,0 +1,98 @@
+<ion-header>
+  <ion-toolbar [class.grey-bg]='!profileComplete'>
+    <ion-buttons>
+      <ion-back-button></ion-back-button>
+      <ion-title></ion-title>
+    </ion-buttons>  
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+  <div *ngIf="profileComplete">
+    <ion-row>
+      <ion-col [class.uninit]="!initialized" size="6" style="margin:0 auto;" >
+        <ion-card class="pad-10" [class.opened]='rewardData.status === "OPENED"' [class.unopened]='rewardData.status == "UNOPENED" ' id="js--sc--container">
+          <div>
+            <ion-avatar  class="reward-avatar gradient-arc">
+              <ion-text  color="light"  class='reward-icon-avatar'>₹</ion-text>
+            </ion-avatar>
+            <ion-row><ion-label class='reward-amount full-width ion-text-center'>₹ {{ rewardData.amount | number:"1.0" }}</ion-label></ion-row>
+            <ion-row><ion-label class="ion-text-center full-width">{{ rewardData.created_at | date:"mediumDate" }}</ion-label></ion-row>
+            <ion-row><ion-label class="ion-text-center full-width" *ngIf="rewardData.status==='SUCCESS'">{{ rewardData.status }}</ion-label>        </ion-row>
+          </div>
+        </ion-card>
+      </ion-col>
+    </ion-row>
+    <div *ngIf="!scratched && rewardData.status =='UNOPENED'" class="ion-text-center">
+      <ion-title *ngIf="!scratched">Scratch  card</ion-title>
+    </div>
+    <div *ngIf="scratched || rewardData.status != 'UNOPENED' " class='ion-text-center'>
+      <ion-title>Congratulations !!</ion-title>    
+      <p *ngIf="rewardData.type==='CASHBACK'">
+        You won cashback of ₹ {{ rewardData.amount | number:"1.0" }}
+      </p>
+      
+      <div *ngIf="openPending">
+        <ion-spinner style="margin:0 auto;"></ion-spinner>
+      </div>
+      <ion-row class='full-width' *ngIf="rewardData.status==='OPENED'">
+        <ion-button *ngIf="!redeem" (click)="redeemReward($event)" style="margin:0 auto;" expand='block' shape='round' color="primary">Redeem</ion-button>
+      </ion-row>    
+    </div>
+
+    <div *ngIf="redeem && !completed && !rewardData.cashgram_url">
+      <app-bank-details  [options]="options"></app-bank-details>
+    </div>
+    <ion-chip *ngIf="completed || rewardData.status==='PENDING'" class="md hydrated  purple-bgx ion-color ion-color-success ion-activatable chip-outline ion-text-center" style="padding: 25px 16px;" color="success" outline="true">
+      <ion-label class="md hydrated sc-ion-label-md-h sc-ion-label-md-s">Reward will be credited to your account very soon. it may take upto 24hours.</ion-label>
+    </ion-chip>    
+    <ion-row *ngIf="rewardData.status==='SUCCESS'">
+      <ion-chip color="success" style="margin:auto;">
+        <ion-label class="md hydrated sc-ion-label-md-h sc-ion-label-md-s">Reward redeemed</ion-label>
+      </ion-chip>
+    </ion-row>
+    <div *ngIf="rewardData.reference_id" class="ion-text-center">
+      <p><ion-text color="medium">Reference id: {{ rewardData.reference_id }}</ion-text></p>
+    </div>  
+  </div>
+  <div *ngIf="!profileComplete">
+    <ion-card-content class="grey-bg-color grey-bg-arc2">
+      <h2>Complete your profile</h2>
+      <ion-text>Please complete your profile 
+         <h2>these details are required to transfer cashback.</h2>
+      </ion-text>
+      <ion-list lines='none'>
+        <ion-item>
+          <ion-icon class="font-size-20" slot="start" color='{{ userData.first_name ? "success" : "danger"}}' name='{{ userData.first_name ? "checkmark-circle" : "close-circle"}}'></ion-icon>
+          <ion-label>Name</ion-label>
+        </ion-item>
+        <ion-item>
+          <ion-icon class="font-size-20" slot="start" color='{{ userData.email ? "success" : "danger"}}' name='{{userData.email ? "checkmark-circle" : "close-circle"}}'></ion-icon>
+          <ion-label>Email</ion-label>
+        </ion-item>
+        <ion-item>
+          <ion-icon class="font-size-20" slot="start" color='{{ userData.phone_number ? "success" : "danger"}}' name='{{userData.phone_number ? "checkmark-circle" : "close-circle"}}'></ion-icon>
+          <ion-label>Phone number</ion-label>
+        </ion-item>                
+      </ion-list>        
+      <ion-button shape='round' [routerLink]="['/user-detail-prompt']" [queryParams]="{ next: '/scratch'}" routerLinkActive="router-link-active"  expand='full'> Continue</ion-button>        
+      <p>&nbsp;</p>      
+    </ion-card-content>
+  </div>
+
+</ion-content>
+
+<ion-footer class="pad-10 no-border ion-text-center" *ngIf="!options.selectedAccount && rewardData.status !='UNOPENED'">
+  <ion-button shape='round' *ngIf="!sharePending" (click)="shareWithFriends($event)">Share with friends</ion-button>
+  <ion-spinner *ngIf="sharePending" style="margin:auto;"></ion-spinner>
+</ion-footer>
+
+<ion-footer *ngIf="redeem && options.selectedAccount && !completed">
+  <div *ngIf="!completed">
+    <ion-button (click)="redeemRewardTo($event)" expand='block' shape='round'>
+      <ion-spinner *ngIf="redeemPending"></ion-spinner> 
+      <ion-text *ngIf="!redeemPending">Continue</ion-text>
+    </ion-button>
+  </div>
+</ion-footer>

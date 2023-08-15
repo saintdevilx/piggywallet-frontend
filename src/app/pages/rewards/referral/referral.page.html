@@ -1,0 +1,66 @@
+
+  <ion-header>
+    <ion-toolbar class="purple-bg-color">
+      <ion-buttons>
+        <ion-back-button></ion-back-button>
+        <ion-title>Invite Friends</ion-title>
+      </ion-buttons>
+    </ion-toolbar>
+  </ion-header>
+<div class="purple-bg referral-bg">  
+  <ion-row>
+    <ion-col size="5">
+      <p></p>
+    </ion-col>
+    <ion-col size="">
+      <h2>Earn upto ₹ 100</h2>
+      <p>Invite your friends to mypiggywallet and get upto <br>₹ 100 cashback when they complete their signup.</p>
+      <a>How it works</a>
+    </ion-col>
+  </ion-row>
+</div>
+<ion-item>
+  Your referral code is &nbsp;<ion-text color="success">{{ referralCode }}</ion-text> 
+  <ion-button fill='none' slot="end" (click)="copyInviteLink($event)">Copy Code</ion-button>
+</ion-item>
+<ion-content>
+  <p>&nbsp;</p>
+  <div class="ion-text-center">
+    <a (click)="inviteShare($event)">         
+      <ion-row style="width: 50%; margin: auto;" class="ion-text-center">
+        <ion-col>
+          <ion-icon class="big-bold-text" color="success" name='logo-whatsapp'></ion-icon>
+        </ion-col>
+        <ion-col>
+          <ion-icon class="big-bold-text" style="color:#FD0000;" name='logo-instagram'></ion-icon>
+        </ion-col>
+        <ion-col>
+          <ion-icon class="big-bold-text" style="color:#3f8bf1;" name='logo-facebook'></ion-icon>
+        </ion-col>            
+        <ion-col class="ion-padding-vertical">
+          <ion-icon style="border: 2px solid #eee;border-radius: 50%;padding: 3px;" color="medium" name="ios-more"></ion-icon>
+        </ion-col>      
+      </ion-row>                    
+      <ion-button fill='clear'>
+        <ion-row>
+          <ion-spinner *ngIf="invitePending"></ion-spinner>
+          <ion-text *ngIf="!invitePending" color="primary">Invite friends</ion-text>    
+        </ion-row>
+      </ion-button>
+    </a>
+    <p>&nbsp;</p>
+    <p>&nbsp;</p>
+    <h2><ion-button size="small" color="medium" fill='clear' (click)="loadDetails($event)">Know more</ion-button></h2>
+  </div>  
+  <ion-row class="ion-padding" *ngIf="enableDetails">
+    <div class="full-width font-size-20">{{ referralDetail.title }}</div>
+    <ion-text class="full-width ">{{ referralDetail?.short_description }}</ion-text>
+    <p style="white-space: pre-wrap;">{{ referralDetail?.full_description }}</p>
+  </ion-row>
+  <ion-row class="ion-text-center">
+    <ion-spinner style="margin: 50px auto;" *ngIf="loadingDetails"></ion-spinner>
+  </ion-row>
+</ion-content>
+<!-- <ion-footer>
+    <ion-button expand="full" (click)="inviteShare($event)">Invite friends</ion-button>
+</ion-footer> -->

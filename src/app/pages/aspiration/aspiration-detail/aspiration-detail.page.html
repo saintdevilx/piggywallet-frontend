@@ -1,0 +1,42 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons>
+      <ion-back-button></ion-back-button> 
+      <ion-text color="primary">Aspirations</ion-text>     
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="purple-bg-color">
+  <div class="white-bg ">
+    <div class="ion-padding">
+      <h1>{{ aspiration.title }}     </h1>
+    </div>
+    <div class="content-container ion-padding purple-bg-color grey-bg-arc-reverse" *ngIf="aspiration">    
+      <div class="content-block">
+        <div >  
+          <img src='{{ aspiration.image }}' style="border-radius: 25px;" />                    
+          <ion-item *ngIf="aspiration.target_date || aspiration.target_days">
+            <ion-text class="fw-500" color="light">
+              <span style="font-size:14px;">₹</span> {{ aspiration.target_amount  }}
+            </ion-text>
+            <ion-text slot="end" color="light" *ngIf="aspiration.target_date">
+              <ion-icon name='clock'></ion-icon> {{ aspiration.target_date | date: 'mediumDate' }}
+            </ion-text>
+            <ion-text slot="end" color="light" *ngIf="aspiration.target_days">
+              <ion-icon name='clock'></ion-icon> {{ aspiration.target_days }} days
+            </ion-text>
+          </ion-item>           
+        </div> 
+      </div> 
+      <ion-text color="light" class="content-description mid-size-text">          
+        {{aspiration.description}}
+      </ion-text>  
+      <div class="ion-text-center aspiration-btn-ctrl">
+        <ion-button style="--box-shadow:1px 2px 10px #FFFFFF;" size="large" shape='round' color="light" (click)="createSaving($event)">
+          <ion-text color="primary">Create saving</ion-text> <ion-icon color="primary" name="arrow-round-forward"></ion-icon>
+        </ion-button>  
+      </div>              
+    </div>
+  </div>
+</ion-content>

@@ -1,0 +1,16 @@
+.payment-summary{
+    padding-bottom: 30px;
+}
+
+.payment-options ion-avatar{--border-radius:0;margin: 0 auto;}
+.pay-opt {
+    //border: 2px solid #a657fe;
+    border-radius: 15px;
+    padding: 5px;
+}
+.payment-options ion-item-divider {
+    margin-bottom: 20px;
+}
+.pay-opt.selected-upi {
+    border: 2px solid #a657ff;
+}

@@ -1,0 +1,68 @@
+<ion-content>
+    <img src="assets/bg-prple.png" class="bg-elmnt">
+    <div class="otp-sec">
+      <img src="assets/otp.png" class="otp-icn">
+      <p> We have sent you an SMS with code on number that you have provided</p>
+      <ion-item class="small" lines='none'>
+        <ion-text color="primary" slot="start">+{{ registrationData['country_code'] }}{{ registrationData['phone_number'] }}
+        </ion-text>
+        <ion-icon name='create'  color="primary" [routerLink]="['/']" routerLinkActive="router-link-active" slot="end"></ion-icon>
+        <ion-text style="margin-left:0;" color="primary" [routerLink]="['/']" routerLinkActive="router-link-active" slot="end">change</ion-text>
+      </ion-item> 
+      <form [formGroup]="registrationForm" (ngSubmit)="onSubmit()">
+        <ion-item class="ion-no-padding">
+          <ion-input class="otp-input" (ionInput)="onInputOTP($event)" formControlName="otp" placeholder="OTP" type="tel" pattern="[0-9]*"></ion-input>
+        </ion-item>
+        <div>&nbsp;</div>
+        <ion-text *ngIf="inValidOTP" color="danger">Incorrect OTP</ion-text>
+        <span class="tm-out">
+          <p *ngIf="countdownTimer">
+            Resend SMS in : <strong><countdown #cd (event)="timerComplete($event)" [config]="{leftTime: countDownTime}" ></countdown></strong>
+          </p>   
+          <p *ngIf="!countdownTimer">
+            <a (click)="resendSMS($event)">Resend SMS <ion-spinner *ngIf="resendPending"></ion-spinner> </a>
+          </p>                  
+        </span>
+        <ion-button class="sbt-btn" size='large' [disabled]='!registrationForm.valid || isSubmitted' shape='round'  type="submit" (click)="onSubmit()"  round="round" expand="block">
+          <span *ngIf="!isSubmitted">Continue</span>
+          <ion-spinner *ngIf="isSubmitted" color="primary"></ion-spinner>
+        </ion-button>
+      </form>
+    </div>   
+    <div class="brand-logo">
+      <img src="assets/logo.png">
+      <span>My Piggywallet</span>
+    </div>     
+    <!-- <div padding>&nbsp;</div>
+    <h2>
+      <strong>{{ "Verify" }}</strong>
+    </h2>
+    <ion-text color="medium">
+      <p>We have sent you an SMS with code on number that you have provided.</p>
+    </ion-text>
+    
+    <form [formGroup]="registrationForm" (ngSubmit)="onSubmit()">
+      <ion-item>
+        <ion-input (ionInput)="onInputOTP($event)" formControlName="otp" placeholder="OTP" type="tel" pattern="[0-9]*" style="font-size: 30px;letter-spacing: 2rem;"></ion-input>
+      </ion-item>
+      <div>&nbsp;</div>
+      <ion-text *ngIf="inValidOTP" color="danger">Incorrect OTP</ion-text>
+      <p>&nbsp;</p>
+      <ion-text color="medium">
+        <p *ngIf="countdownTimer">
+          Resend SMS in : <strong><countdown #cd (event)="timerComplete($event)" [config]="{leftTime: countDownTime}" ></countdown></strong>
+        </p>
+        <p *ngIf="!countdownTimer">
+          <a (click)="resendSMS($event)">Resend SMS <ion-spinner *ngIf="resendPending"></ion-spinner> </a>
+        </p>
+      </ion-text>
+      <p>&nbsp;</p>     
+      <ion-button size='large' [disabled]='!registrationForm.valid || isSubmitted' shape='round'  type="submit" (click)="onSubmit()"  round="round" expand="block">Continue
+        <ion-spinner *ngIf="isSubmitted"></ion-spinner>
+      </ion-button>
+      <p>&nbsp;</p>
+    </form> -->
+
+  </ion-content>
+  
+  

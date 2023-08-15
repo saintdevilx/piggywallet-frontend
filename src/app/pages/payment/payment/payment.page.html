@@ -1,0 +1,106 @@
+<ion-header>
+  <ion-toolbar class="grey-bg">
+    <ion-buttons slot="start">
+      <ion-back-button ></ion-back-button>
+    </ion-buttons>   
+  </ion-toolbar>
+</ion-header>
+
+  <ion-content>
+    <div *ngIf="userData.first_name && userData.email ">
+      <div class="grey-bg-color grey-bg-arc2">
+        <ion-card-content>      
+          <app-payment-summary [summaryData]='summaryData'></app-payment-summary>
+        </ion-card-content>
+      </div>
+
+      <div>
+        <ion-card-header>
+          <ion-card-subtitle>Payment options</ion-card-subtitle>
+        </ion-card-header>
+        <ion-card-content class="payment-options">
+          <ion-row class="ion-text-center">
+            <ion-col *ngFor="let app of installedUPIapps">
+              <div (click)="selectUPIService(app)" class="pay-opt {{ (selectedUPI && selectedUPI.appId === app.appId) ? 'selected-upi' : '' }}">
+                <ion-avatar class="ion-text-center">
+                  <img src="{{app.appIcon}}" />            
+                </ion-avatar>
+                <ion-text class="small-text" color="medium">{{app.appName}}</ion-text>
+              </div>
+            </ion-col> 
+            <div class="full-width ion-text-center" *ngIf="installedUPIapps == null">
+              <ion-spinner></ion-spinner>
+            </div>      
+            <div class="full-width ion-text-center ion-padding" *ngIf="installedUPIapps !=null && !installedUPIapps.length">
+              <ion-text color="medium">You do not have any UPI apps installed. Currently we only accept UPI payments.</ion-text>
+            </div> 
+          </ion-row>
+          <ion-row>
+            <ion-col (click)="otherUPI($event)">
+              <ion-button fill='clear'>
+                <ion-img src='assets/upi-icon.svg' style="width:18%;"></ion-img>
+                <ion-text>Other UPI</ion-text>
+              </ion-button>
+            </ion-col>
+            <ion-col>
+              <ion-button fill='clear'>
+                <ion-icon name="share"></ion-icon>
+                <ion-text>Share </ion-text>
+              </ion-button>
+            </ion-col>
+          </ion-row>
+          <p>&nbsp;</p>
+          <!-- <ion-item-divider>Other Payment Options</ion-item-divider> -->
+          <!-- <ion-row class="ion-text-center">
+            <ion-col size='5'>
+              <div class="pay-opt">
+                <ion-avatar>
+                  <img src="assets/card-icon.svg" />                  
+                </ion-avatar>
+                <ion-text class="small-text" color="medium">Debit/Credit Card</ion-text>    
+              </div>
+            </ion-col>
+            <ion-col size='5'>
+              <div class="pay-opt">
+                <ion-avatar>
+                  <img src="assets/online-banking.svg" />                    
+                </ion-avatar>
+                <ion-text class="small-text" color="medium">Internet Banking</ion-text>  
+              </div>
+            </ion-col>      
+          </ion-row> -->
+          <ion-item class="small" lines='none'></ion-item>
+          <ion-item class="small" lines='none'></ion-item>      
+        </ion-card-content>
+      </div>
+    </div>
+    <div *ngIf="!userData.first_name || !userData.email">
+      <ion-card-content class="grey-bg-color grey-bg-arc2">
+        <h1>You have not completed your profile</h1>
+        <ion-text>Please complete your profile to proceed</ion-text>
+        <ion-list lines='none'>
+          <ion-item>
+            <ion-icon class="font-size-20" slot="start" color='{{ userData.first_name ? "success" : "danger"}}' name='{{ userData.first_name ? "checkmark-circle" : "close-circle"}}'></ion-icon>
+            <ion-label>Name</ion-label>
+          </ion-item>
+          <ion-item>
+            <ion-icon class="font-size-20" slot="start" color='{{ userData.email ? "success" : "danger"}}' name='{{userData.email ? "checkmark-circle" : "close-circle"}}'></ion-icon>
+            <ion-label>Email</ion-label>
+          </ion-item>
+          <ion-item>
+            <ion-icon class="font-size-20" slot="start" color='{{ userData.phone_number ? "success" : "danger"}}' name='{{userData.phone_number ? "checkmark-circle" : "close-circle"}}'></ion-icon>
+            <ion-label>Phone number</ion-label>
+          </ion-item>                
+        </ion-list>        
+        <ion-button shape='round' [routerLink]="['/user-detail-prompt']" routerLinkActive="router-link-active"  expand='full'> Continue</ion-button>        
+        <p>&nbsp;</p>
+      </ion-card-content>
+
+    </div>      
+  </ion-content>
+  
+  <ion-footer>  
+    <ion-button class="box-shadow-purple" shape='round' size='large' [disabled]="requestStatus || !selectedUPI" (click)="onPayment($event)" expand='block'>
+      <ion-text><span class="ion-text-left">Pay</span> <span  class="ion-text-right">₹ {{ summaryData.deduction_amount  }}</span></ion-text> <ion-spinner *ngIf="requestStatus"></ion-spinner> 
+    </ion-button>
+  </ion-footer>

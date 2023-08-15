@@ -1,0 +1,30 @@
+<!-- <ion-header>
+  <ion-toolbar>
+    <ion-title>complete</ion-title>
+  </ion-toolbar>
+</ion-header> -->
+<ion-content class="purple-bg-color">
+  <div *ngIf="status === 'SUCCESS'">
+    <div class="ion-text-center status-content">
+      <div><ion-icon color='success' name="checkmark-circle"></ion-icon></div>
+      <h5>Success</h5>
+    </div>
+  </div>
+  <div *ngIf="status == 'PENDING' " class="ion-text-center full-width  status-content">
+    <ion-spinner></ion-spinner>
+    <div>Please wait</div>
+  </div>
+ 
+  <div *ngIf="status === 'FAILURE'">
+    <div class="ion-text-center status-content">
+      <div><ion-icon  color='danger' name="close-circle"></ion-icon></div>
+      <h5>Sorry, Did not work. please try again.</h5>
+    </div>
+  </div>
+  <div class="ion-text-center">
+    Retry: {{retryAttempt}}
+  </div>
+</ion-content>
+<ion-footer>
+  <ion-button [routerLink]="['/saving-detail']" routerLinkActive="router-link-active"  color="success" size="medium" expand='full'>Done</ion-button>
+</ion-footer>

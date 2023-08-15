@@ -1,0 +1,131 @@
+<ion-header>
+  <ion-toolbar class="grey-bg">
+    <ion-buttons>
+      <ion-back-button style="display: block;"></ion-back-button>
+    </ion-buttons>
+    <ion-button *ngIf="savingGoal.status != 'Withdraw' && savingGoal.status != 'Cancelled'" fill='cear' slot="end" (click)="moreOptions($event)">
+        <ion-icon name="more"></ion-icon>
+    </ion-button> 
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>   
+  <!-- Start Saving Goal Summary Card -->
+  <div class="no-margin no-curve ">         
+    <ion-card-content class="grey-bg-arc">        
+      <ion-row>
+        <div class="full-width ion-text-center">
+          <h1><ion-text class="mid-size-text fw-700" color="primary">{{ savingGoal.title }}</ion-text></h1>                     
+          <ion-text *ngIf="savingGoal.time_left >= 0 " slot="start" color="medium">{{ savingGoal?.time_left }} day{{ savingGoal?.time_left < 2 ? '' : 's' }} to go</ion-text>            
+        </div>
+      </ion-row>      
+      <ion-row class="ion-text-center" color="light" *ngIf="savingGoal.time_left > 0 && (savingGoal.status === 'In Progress' || savingGoal.status === 'Completed' )">
+        <!-- Saving goal control -->
+        <ion-col class="separator">
+          <a [class.disabled]="savingGoal.time_left < 0" (click)="deposit()">
+            <div class="pink-bg-circle"><ion-icon color="dark"  src='assets/deposit-outline.svg'></ion-icon> </div>
+            <h6><ion-text color="dark">Deposit</ion-text></h6>
+          </a>
+        </ion-col>
+        <ion-col>
+          <a [class.disabled]="savingGoal.current_amount < 100 " (click)="withdraw()">
+            <div class="pink-bg-circle"><ion-icon color="dark" src='assets/withdraw-outline.svg'></ion-icon> </div>
+            <h6><ion-text color="dark">Withdraw</ion-text></h6>
+          </a>
+        </ion-col>
+      </ion-row>
+    </ion-card-content>
+  </div>
+  <!-- End Saving Goal Summary Card -->
+  <ion-card class="saving-detail-stats">
+    <div>      
+      <ion-grid>
+        <ion-item lines='none'>          
+          <div class="current-deposit" slot="start">
+            <ion-item lines='none' class="ion-no-padding">
+              <img src="assets/cost.png" />
+              <div>
+                <ion-text class="small-label">Balance</ion-text>
+                <h6 class="oneline-text-wrap no-margin-top no-margin-bottom"><ion-text color="primary" class="font-size-20 fw-500">₹ {{ savingGoal.current_amount| number:'1.0-0' }}</ion-text></h6>                
+              </div>
+            </ion-item>
+          </div>
+          <div class="target-amount" slot="end">
+            <ion-item lines='none' class="ion-no-padding">
+              <img src="assets/target.png" />
+              <div>
+                <ion-text class="small-label">Target</ion-text>
+                <h6 class="oneline-text-wrap no-margin-top no-margin-bottom"><ion-text color="primary" class="font-size-20 fw-500">₹ {{ savingGoal.target_amount | number:'1.0-0'  }}</ion-text></h6>
+              </div>
+            </ion-item>
+          </div>
+        </ion-item>
+        <ion-row>
+          <ion-progress-bar value="{{ getcompletedPercentage() }}"></ion-progress-bar>
+        </ion-row>
+
+      </ion-grid> 
+    </div>
+  </ion-card>
+
+    <ion-item lines="none" class="full-width" *ngIf="savingGoal.status === 'In Progress' ">          
+      <ion-text *ngIf="savingGoal.time_left < 0" slot="start" color="medium"></ion-text>
+      <ion-text slot="end" color="medium" class="small-label">{{ savingGoal.getDespositFrequency() }} </ion-text>
+      <ion-text color="medium" class="small-label">{{ savingGoal.getDeductionMode() }}</ion-text>
+    </ion-item>
+  <div class="grey-bg-arc-reverse grey-bg-arc">
+    <ion-card-content class="ion-no-padding" *ngIf=" settings.autoDebitEnabled && savingGoal.status === 'In Progress' && savingGoal.time_left > 0 && !savingGoal.payment_subscription && savingGoal.deduction_mode === 1">
+      <div class="ion-text-center"><ion-button (click)="allowAutoDebit($event)" routerLinkActive="router-link-active" class="box-shadow-purple" shape='round' size='medium'>Allow Auto Debit</ion-button></div>
+      <ion-text class="small-label">
+        Please allow auto debit so that you can start saving without any trouble. we will debit the authorised amount from your bank acount to deposit to your wallet.
+      </ion-text>
+      <div>&nbsp;</div>
+    </ion-card-content>  
+
+    <ion-card-content *ngIf="savingGoal.status === 'In Progress' && savingGoal.time_left < 0">
+      <h3>
+        <div class="ion-text-center"><ion-icon style="font-size: 50px;" src='assets/restore.svg'></ion-icon></div>
+      </h3>
+      <p>Seems like you missed it. Don't worry reset your target</p>
+      <ion-button size='medium' expand='full' shape='round' [routerLink]="['/edit-saving-goal']" routerLinkActive="router-link-active" >Reset Goal</ion-button>      
+    </ion-card-content>
+
+    <ion-card-content *ngIf="savingGoal.status === 'Completed'">
+      <div class="ion-text-center">
+        <ion-icon style="font-size:60px;" class="big-icon" src='assets/congrats.svg'></ion-icon>
+        <h2><ion-text color="primary"> Congratulations you did it.</ion-text> </h2>
+      </div>
+    </ion-card-content>
+    <!-- End saving goal control -->
+
+    <app-transaction-history *ngIf="transactions" [historyResultList]='transactions' ></app-transaction-history>
+    <ion-card class="ion-text-center no-margin-left no-margin-right" *ngIf="!transactions">
+      <ion-item lines='none'>
+        <ion-avatar slot="start">
+          <ion-skeleton-text></ion-skeleton-text>
+        </ion-avatar>
+        <ion-skeleton-text animated></ion-skeleton-text>      
+      </ion-item>
+      <ion-item  lines='none'>
+        <ion-skeleton-text animated width='20%' slot="start"></ion-skeleton-text>
+        <ion-skeleton-text animated width='30%' slot="end"></ion-skeleton-text>      
+      </ion-item>
+    </ion-card>
+    <div *ngIf="hasMoreData">
+      <ion-infinite-scroll (ionInfinite)="loadMoreTransaction($event)">
+        <ion-infinite-scroll-content 
+        loadingSpinner="bubbles"
+        loadingText="Loading more data..."></ion-infinite-scroll-content>
+      </ion-infinite-scroll>
+    </div>
+    <div class="grey-bg" *ngIf="!hasMoreData && transactions && transactions.length">    
+        <ion-card class="grey-bg" style="box-shadow: none;text-align: center;">
+          <ion-card-header>No more results to show</ion-card-header>
+        </ion-card>
+    </div>    
+  </div> 
+  <!-- Refresh-->
+  <ion-refresher slot="fixed" (ionRefresh)="doRefreshTransaction($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>    
+</ion-content>

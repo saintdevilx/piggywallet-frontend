@@ -1,0 +1,26 @@
+// ion-list ion-item {
+//     --background: #f2f2f2;
+//     border-radius: 25px;
+//     --padding-start: 25px !important;
+//     margin-bottom: 10px !important;
+//     margin-top: 15px !important;
+// }
+.big-round{margin-bottom: 25px !important;}
+.file-input-container ion-input {
+    opacity: 0;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    border: 1px solid purple;
+    top: 10px;
+}
+
+.file-input-container {
+    position: relative;
+    border: 1px dotted #a657fe;
+    border-radius: 13px;
+    margin-top: 10px;
+    width: 100%;
+    padding-top: 10px;
+    padding-bottom: 10px;
+}

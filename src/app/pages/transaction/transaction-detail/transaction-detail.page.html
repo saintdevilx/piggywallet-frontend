@@ -1,0 +1,84 @@
+<ion-header>
+  <ion-toolbar class="purple-bg-color">
+    <ion-buttons>
+      <ion-back-button></ion-back-button>
+      <ion-title>
+        <div>Transaction {{ transaction.status }}</div>
+        <ion-text class="small-label">{{ transaction.created_at | date: 'mediumDate' }}</ion-text>
+      </ion-title>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div class="history-card">
+    <div>
+      <ion-grid>
+        <ion-row class="full-width small">
+          <ion-col size=2>
+            <ion-icon class="transaction-type" src='assets/deposit-outline.svg' *ngIf="transaction.type == 'CREDIT' "></ion-icon>
+            <ion-icon class="transaction-type"src='assets/withdraw-outline.svg' *ngIf="transaction.type == 'DEBIT' "></ion-icon>
+          </ion-col>
+          <ion-col size="6">
+            <ion-text class="fw-400">
+              <ion-text class="fw-700" color="dark">{{ transaction.type == 'CREDIT' ? "Deposited" : "Withdrawn" }}</ion-text>
+              <h5 class="ion-no-margin">
+                <ion-text class="full-width " color="dark">{{ transaction.saving_goal.title }}</ion-text>
+              </h5>
+              <ion-text class="small-label" color="{{ transaction.status === 'SUCCESS' ? 'success' : (transaction.status === 'PENDING' ? 'warning' : 'danger') }}">
+                <ion-icon name="checkmark-circle-outline" *ngIf="transaction.status === 'SUCCESS'"></ion-icon>
+                <ion-icon name="time" *ngIf="transaction.status === 'PENDING'"></ion-icon>
+                <ion-icon name="close-circle-outline" *ngIf="transaction.status === 'FAILED' || transaction.status === 'CANCELLED'"></ion-icon>
+                {{ transaction.status }}
+              </ion-text>                   
+            </ion-text>
+          </ion-col>
+          <ion-col size="4" class=" ion-text-right">
+            <h5>
+              <ion-text color="primary" class="fw-500 small-label" >{{ transaction.created_at | date: 'mediumDate' }}</ion-text>
+            </h5>                    
+            <ion-text class="fw-600 oneline-text-wrap" color="dark" >
+            ₹ {{ transaction.amount }}
+            <h5>
+              <ion-text class="small-label ">{{ transaction.created_at | date: 'shortTime' }}</ion-text>
+            </h5>
+            <ion-text color="dark" class="small-label"> {{ transaction.type | titlecase }}ed {{ transaction.type == 'CREDIT' ? 'to' : 'from' }} <ion-icon name="wallet"></ion-icon></ion-text>                  
+            </ion-text>    
+          </ion-col>                          
+        </ion-row>
+      </ion-grid>
+      <div>
+        <div>&nbsp;</div>
+        <ion-row class="ion-text-center" *ngIf="transaction.status === 'INITIATED'">
+          <ion-spinner *ngIf="requestTimeout" style="margin: 0 auto;"></ion-spinner>
+          <div *ngIf="!requestTimeout" class="full-width">
+            <div style="display: block;"><ion-icon color="medium" name='timer' size="large" style="margin:0 auto;"></ion-icon></div>
+            <ion-text class="small-label" color="medium">Timeout, please try afer sometime.</ion-text>
+          </div>
+        </ion-row>
+        <p>&nbsp;</p>
+        <div class="ion-padding">
+          <ion-row>
+            <ion-text color="medium" class="small-label full-width">Order Id: </ion-text> 
+            <div class="fw-500">{{ transaction.order_id }}</div>
+          </ion-row>
+          <div class="full-width">&nbsp;</div>
+          <ion-row>
+            <ion-text color="medium" class="small-label full-width">TXN Id: </ion-text> 
+            <div class="fw-500">{{ transaction.pk }}</div>           
+          </ion-row>
+          <ion-row *ngIf="transaction.status === 'FAILED'">
+            <p>
+              <ion-text class="small-label">
+                In case the amount is deducted, it will be added back to your back account within 48 hours from the date of transaction.
+              </ion-text>
+            </p>
+          </ion-row>
+          <p>
+            <ion-text color="medium" class="small-label">Reach us at support@mypiggywallet.com</ion-text>
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</ion-content>

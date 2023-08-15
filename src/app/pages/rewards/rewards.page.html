@@ -1,0 +1,81 @@
+<ion-header>
+  <ion-toolbar class="purple-bg-color">
+    <ion-buttons>
+      <ion-back-button></ion-back-button>
+      <ion-title>Earn &amp; save</ion-title>
+    </ion-buttons>    
+  </ion-toolbar>
+</ion-header>
+
+<ion-row  class="purple-bg no-padding-top" style="border-radius: 0 0 33px 33px;padding-top: 0;padding-bottom: 20px;">
+  <ion-col size="4" class="ion-text-center">
+    <ion-avatar class="reward-avatar">
+      <ion-icon class="big-icon" src="assets/trophy.svg" style="height:50px;"></ion-icon>
+    </ion-avatar>
+    <ion-label>
+      <ion-text color="light" >Rewards</ion-text>
+    </ion-label>
+  </ion-col>
+  <ion-col size="4" class="ion-text-center">
+    <a [routerLink]="['/offers']" routerLinkActive="router-link-active" >
+      <ion-avatar class="reward-avatar">
+        <ion-text  color="primary"  class='reward-icon-avatar'>%</ion-text>
+      </ion-avatar>        
+      <ion-text color="light">Offers</ion-text>
+    </a>
+  </ion-col>
+</ion-row>
+<div>
+  <ion-item class="small" lines='none'>
+    <a [routerLink]="['/referral']" routerLinkActive="router-link-active" >
+      <img src='assets/money-bag.svg' slot="start" width="50" />
+    </a>
+    <a [routerLink]="['/referral']" routerLinkActive="router-link-active" >
+      <ion-label>
+        Invite your friends and earn upto ₹ 100
+      </ion-label>
+    </a>
+    <ion-icon slot="end" name=''></ion-icon>
+  </ion-item>
+</div>
+<ion-content>
+
+  <ion-row *ngIf="pending && rewards && !rewards.length">
+    <ion-spinner style="margin: 0 auto;"></ion-spinner>
+  </ion-row>  
+
+  <ion-row *ngIf="rewards.length">
+    <ion-col size="6" *ngFor="let reward of rewards" class="ion-no-padding">
+      <ion-card (click)="openScratchCard($event,reward)" [class.unopened]="reward.status == 'UNOPENED'" >
+        <div *ngIf="reward.status!=='UNOPENED'" [class.opened]="reward.status != 'UNOPENED'">
+          <ion-avatar  class="reward-avatar gradient-arc">
+            <ion-text  color="light"  class='reward-icon-avatar'>₹</ion-text>
+          </ion-avatar>
+          <ion-row><ion-label class='reward-amount full-width ion-text-center'>₹ {{ reward.amount| number  }}</ion-label></ion-row>
+
+          <ion-row ><ion-label class="ion-text-center full-width">{{ reward.created_at | date:"mediumDate" }}</ion-label></ion-row>
+          <ion-row><ion-label class="ion-text-center full-width">{{ reward.status }}</ion-label>        </ion-row>
+        </div>
+        <div *ngIf="reward.status==='UNOPENED'">
+          <ion-img src='assets/earned-reward.png'></ion-img>
+        </div>
+        <div *ngIf="reward.status!='UNOPENED'">
+          <ion-img src='assets/confetti.png'></ion-img>
+        </div>        
+      </ion-card>
+    </ion-col>
+  </ion-row>
+  
+  <app-empty-state empty_text="You have not earned any rewards yet ?" *ngIf="!pending && rewards && !rewards.length"></app-empty-state>  
+
+  <div *ngIf="hasNext">
+    <ion-infinite-scroll (ionInfinite)="loadMoreRewards($event)">
+      <ion-infinite-scroll-content 
+      loadingSpinner="bubbles"
+      loadingText="Loading more data..."></ion-infinite-scroll-content>
+    </ion-infinite-scroll>
+  </div> 
+  <ion-refresher slot="fixed" (ionRefresh)="onReferesh($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>  
+</ion-content>

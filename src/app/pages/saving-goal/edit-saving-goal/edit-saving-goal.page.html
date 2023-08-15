@@ -1,0 +1,12 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons>
+      <ion-back-button></ion-back-button>
+      <ion-title>Edit Saving Goal</ion-title>
+    </ion-buttons>    
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <app-saving-detail-form (submit)="onSubmitForm($event)" [savingGoalForm]='savingGoalForm'></app-saving-detail-form>
+</ion-content>

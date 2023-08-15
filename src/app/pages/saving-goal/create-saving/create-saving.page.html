@@ -1,0 +1,19 @@
+<ion-header>
+  <ion-toolbar style="--background:#f2f2f2;">
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>   
+  </ion-toolbar>  
+</ion-header>
+
+<ion-content>
+  <div>  
+    <ion-card-content class="create-form">
+      <ion-text>You can save for anything from small goal to big e.g. Upcoming trip, expensive clothing/shoes, phone, etc. </ion-text>         
+      <ion-text>You can also </ion-text>
+      <ion-button fill='none' [routerLink]="['/aspiration-list']" routerLinkActive="router-link-active"  size='small' class="color-purple-dark"> <ion-icon name='search'></ion-icon> Choose aspiration</ion-button>
+      <img src="assets/cost.png" />
+    </ion-card-content>      
+    <app-saving-detail-form (submit)="onSubmitform($event)" [savingGoalForm]="savingGoalForm"></app-saving-detail-form>   
+  </div>
+</ion-content>

@@ -1,0 +1,188 @@
+<form class="form-container saving-form" [formGroup]="savingGoalForm" (ngSubmit)="onSubmit()">
+  <ion-grid>
+    <ion-avatar><img hidden src="assets/temp.jpg" /></ion-avatar>    
+    <ion-card class="big-round purple-bg" *ngIf="step==1">
+      <ion-item lines='none' class="small"></ion-item>
+      <ion-list>
+        <ion-text>Saving for <span>e.g. New Phone</span> </ion-text>        
+        <ion-item class="ion-no-padding">
+          <ion-input color="light" class="font-size-20 fw-500" formControlName='title' required="true" block full type="text"></ion-input>      
+        </ion-item>
+        <div>&nbsp;</div>
+        <ion-text>Amount to be save</ion-text>
+        <ion-item class="ion-no-padding">
+          <div class='width-100'>
+            <div class="curr-symbol">
+              <h3>
+                <ion-text color="light">₹</ion-text>
+              </h3>
+            </div>
+            <ion-input color="light" class="font-size-20 fw-500" required="true" (input)="calculateDeductionAmount($event)" formControlName="target_amount" placeholderx="Goal to save" type="number"></ion-input>                
+          </div>
+        </ion-item>
+        <p></p>
+        <ion-text >Amount must be between ₹{{minAmount}} and ₹{{maxAmount}}(1Lakh)</ion-text >        
+      </ion-list>
+      <ion-list lines='none'>      
+        <ion-item class="small"></ion-item>          
+      </ion-list>
+    </ion-card>
+    <ion-card class="big-round purple-bg" *ngIf="step==2">
+      <ion-list lines='none'>
+        <h3>When do you want to achieve this ? </h3>      
+        <div>
+          <ion-chip outline='true' [color]=" number_of_days === 14 ? 'selected' : 'white' ">
+            <ion-label (click)="setTimeline(14)">2 week</ion-label>
+          </ion-chip>
+          <ion-chip outline='true' [color]=" number_of_days  === 21 ? 'selected' : 'white' " >
+            <ion-label (click)="setTimeline(21)" >3 week </ion-label>
+          </ion-chip>
+          <ion-chip outline='true' [color]=" number_of_days  === 30 ? 'selected' : 'white'">
+            <ion-label (click)="setTimeline(30)">1 month</ion-label>
+          </ion-chip>
+          <ion-chip outline='true' [color]=" number_of_days   === 45 ? 'selected' : 'white'">
+            <ion-label (click)="setTimeline(45)"> 1.5 month</ion-label>
+          </ion-chip>          
+          <ion-chip outline='true' [color]=" number_of_days  === 60 ? 'selected' : 'white' ">
+            <ion-label (click)="setTimeline(60)">2 months</ion-label>
+          </ion-chip>
+          <ion-chip outline='true' [color]=" number_of_days  === 90 ? 'selected' : 'white' ">
+            <ion-label (click)="setTimeline(90)">3 months</ion-label>
+          </ion-chip>
+          <ion-chip outline='true' [color]=" number_of_days  === 120 ? 'selected' : 'white' ">
+            <ion-label (click)="setTimeline(120)">4 months</ion-label>
+          </ion-chip>
+          <ion-chip outline='true' [color]=" number_of_days  === 150 ? 'selected' : 'white' ">
+            <ion-label (click)="setTimeline(150)">5 months</ion-label>
+          </ion-chip>
+          <ion-chip outline='true' [color]=" number_of_days  === 180 ? 'selected' : 'white' ">
+            <ion-label (click)="setTimeline(180)">6 months</ion-label>
+          </ion-chip>                                        
+        </div>
+        <ion-item class="small" lines='none'>          
+          <ion-chip style="background: #FFFFFF;" color="success">
+            <ion-label *ngIf="!savingGoalForm.value.target_date">Select date</ion-label>
+            <ion-datetime class="fw-500"  min="{{ minDate | date:'yyyy-MM-dd' }}" max="{{maxDateYear}}"  displayFormat="MMM DD, YYYY" pickerFormat="MMM DD YYYY" required="true" (ionChange)="calculateDeductionAmount($event)"  formControlName="target_date" placeholderx="Timeline"></ion-datetime>
+          </ion-chip>
+        </ion-item>      
+        <div *ngIf="savingGoalForm.value.target_amount && savingGoalForm.value.target_date">          
+          
+          <h3>How often you want to deposit? </h3>
+            <ion-radio-group (ionChange)="calculateDeductionAmount($event)" value="{{savingGoalForm.value.deposit_frequency}}"  formControlName="deposit_frequency"  required="true" >
+              <ion-grid>
+                <ion-row>                
+                  <ion-col size="6" *ngIf="deductions.daily">
+                    <ion-card class="ion-no-margin">     
+                      <ion-label color="primary" class="multi-line">
+                        <div>Everyday</div>
+                        <span color="primary" class="fw-500 font-size-20">₹ {{ deductions.daily | number:"1.0-0" }}</span>
+                        <h5>
+                          <ion-text class="small-label" color="primary">for {{ getNumberOferDeducations(1) }} day.</ion-text>
+                          <ion-icon name="checkmark-circle"></ion-icon>
+                        </h5>
+                      </ion-label>     
+                      <ion-radio slot="start" value='1' checked="{{ (savingGoalForm.value.deposit_frequency === 'daily' || !savingGoalForm.value.deposit_frequency&&savingGoalForm.value.deposit_frequency === 'daily') ? true : false }}" ></ion-radio>
+                    </ion-card>
+                  </ion-col>
+                  <ion-col size="6" *ngIf="number_of_days >= 7 && deductions.weekly">     
+                    <ion-card  class="ion-no-margin">
+                      <ion-label  color="primary" class="multi-line">
+                        <div>Every week</div>
+                        <span color="primary" class="fw-500 font-size-20">₹ {{deductions.weekly | number:"1.0-0"}}</span>
+                        <h5>
+                          <ion-text class="small-label" color="primary">for {{ getNumberOferDeducations(7) }} week.</ion-text>
+                          <ion-icon name="checkmark-circle"></ion-icon>
+                        </h5>              
+                      </ion-label>     
+                      <ion-radio selected='true' checked="{{ (savingGoalForm.value.deposit_frequency === 'weekly' || !savingGoalForm.value.deposit_frequency&&savingGoalForm.value.deposit_frequency === 'weekly')  ? true : false }}" slot="start"  value='7'></ion-radio>
+                    </ion-card>
+                  </ion-col>
+                  <ion-col size="6" *ngIf="number_of_days >= 30 && deductions.monthly" class="small">     
+                    <ion-card  class="ion-no-margin">
+                      <ion-label color="primary" class="multi-line">
+                        <div>Every month</div>
+                        <span class="fw-500 font-size-20">₹ {{deductions.monthly | number:"1.0-0"}}</span>
+                        <h5>
+                          <ion-text class="small-label" color="primary">for {{ getNumberOferDeducations(30) }} month.</ion-text>
+                          <ion-icon name="checkmark-circle"></ion-icon>
+                        </h5>
+                      </ion-label>     
+                      <ion-radio slot="start"  value='30' checked="{{ (savingGoalForm.value.deposit_frequency === 'monthly' || !savingGoalForm.value.deposit_frequency && savingGoalForm.value.deposit_frequency === 'monthly') ? true: false}}" ></ion-radio>
+                    </ion-card>
+                  </ion-col>
+                </ion-row>
+              </ion-grid>              
+            </ion-radio-group>
+        </div>    
+      </ion-list>      
+    </ion-card>
+    <ion-card class="big-round purple-bg" *ngIf="step==3">
+      <div *ngIf="savingGoalForm.value.target_amount && savingGoalForm.value.target_date">
+        <ion-list lines='none'>  
+          <ion-item>
+            <h2><ion-text color="light">How do you prefer to pay? </ion-text></h2>
+          </ion-item>          
+          <ion-radio-group value="{{ savingGoalForm.value.deduction_mode }}" formControlName="deduction_mode" required='true'>
+            <ion-item class="ion-no-padding">
+              <ion-card>
+                <ion-radio slot="start" value="1" checked="{{ savingGoalForm.value.deduction_mode === 'AUTO DEBIT' }}"></ion-radio>              
+                <ion-label class="multi-line">
+                  Auto debit
+                  <h5>
+                    <ion-text class="small-label" color="primary">Link your account and amount will be deposit to your piggy wallet.</ion-text>
+                    <ion-icon name="checkmark-circle"></ion-icon>
+                  </h5>
+                </ion-label>
+              </ion-card>
+            </ion-item>              
+            <ion-item class="ion-no-padding">
+              <ion-card>
+                <ion-radio slot="start" value="0" checked="{{ savingGoalForm.value.deduction_mode === 'MANUAL' }}"></ion-radio>              
+                <ion-label class="multi-line">Manual
+                  <h5>
+                    <ion-text class="small-label" color="primary">We will remind you when its time to deposit. you will add money to your piggy wallet to achieve your goal.</ion-text>
+                    <ion-icon name="checkmark-circle"></ion-icon>                   
+                  </h5>    
+                </ion-label>
+              </ion-card>
+            </ion-item>
+          </ion-radio-group>
+        </ion-list>
+      </div>
+      <div *ngIf="savingGoalForm.value.target_amount && savingGoalForm.value.deposit_frequency">
+        <ion-item lines='none' class="">
+          <ion-label color="light">
+            <h6>
+              <ion-text>You will deposit</ion-text>
+            </h6>
+            <span class="fw-500">₹ {{deductionAmount | number:"1.2-2" }} </span> <ion-text color="light">every {{ savingGoalForm.value.deposit_frequency == 1 ? 'day' : (savingGoalForm.value.deposit_frequency == 7 ? " week" : " month" ) }}  for {{number_of_deducations}} {{ savingGoalForm.value.deposit_frequency == 1 ? 'day' : (savingGoalForm.value.deposit_frequency == 7 ? " week" : " month" ) }}</ion-text>            
+          </ion-label>            
+        </ion-item>
+      </div>     
+      <div>&nbsp;</div>   
+    </ion-card>
+
+    <!--Form control-->
+    <div *ngIf="!savingGoalForm.value.submitted">
+      <div class="ion-text-right">
+        <div *ngIf="step < 3">
+          <ion-button size='large' color="light" [disabled]='nextDisabled()' shape='round' (click)="nextStep($event)"><ion-icon name="arrow-round-forward"></ion-icon></ion-button>
+        </div>
+        <div *ngIf="step==3" class=" ion-text-right">
+          <ion-button color="light" size="large" type="submit" class="pink-button"  routerLinkActive="router-link-active"  shape="round"  [disabled]="!savingGoalForm.valid||savingGoalForm.value.submitted" >
+            <ion-icon name='arrow-round-forward'></ion-icon> </ion-button>
+        </div>         
+      </div>
+      <div class="prev-button">
+        <div *ngIf="step > 1">
+          <ion-button size='large'  color="light"  shape='round' (click)="prevStep($event)"><ion-icon name="arrow-round-back"></ion-icon></ion-button>
+        </div>   
+      </div>
+    </div>
+    <div class="ion-text-center" *ngIf="savingGoalForm.value.submitted">
+      <ion-spinner ></ion-spinner>         
+      <p>&nbsp;</p>
+    </div>    
+    <!-- End form controlll..-->
+  </ion-grid>
+</form>

@@ -1,0 +1,27 @@
+<ion-header>
+  <ion-toolbar class="purple-bg-color">
+    <ion-buttons>
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+<ion-content class="purple-bg user-detail">
+  <div>    
+    <ion-item lines='none'>
+      <h1 style="color: #FFF !important;width: 100%;">Complete your profile</h1>
+    </ion-item>
+    <ion-card>
+      <!-- <ion-item class="small" style="margin-top:30px" lines='none'></ion-item>
+      <div class="ion-text-center"><img src='assets/icons/icon-192x192.png' style="width:80px;margin:0 auto;"></div> -->
+      <ion-card-content>
+        <app-user-profile-form redirectUrl='/payment'></app-user-profile-form>
+      </ion-card-content>
+    </ion-card>
+    <ion-card>
+      <ion-card-content>
+        <ion-text class="small-label">We will never share your details with anyone. </ion-text>
+        <ion-text class="small-label">These details are required to use this platform and to keep you updated about the activity about your account.</ion-text>    
+      </ion-card-content>
+    </ion-card>
+  </div>
+</ion-content>

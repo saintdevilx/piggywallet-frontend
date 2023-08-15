@@ -1,0 +1,68 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button ></ion-back-button>
+      <ion-title>Saving goals</ion-title>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="grey-bg-color">
+    <ion-segment class="white-bg" scrollable='true' (ionChange)="segmentChanged($event)" value='{{savingType}}'>
+      <ion-segment-button value="{{SavingType.IN_PROGRESS}}">
+        <ion-label>In Progress</ion-label>
+      </ion-segment-button>
+      <ion-segment-button value="{{SavingType.COMPLETED}}">
+        <ion-label>Achieved</ion-label>
+      </ion-segment-button>
+      <ion-segment-button value="{{SavingType.WITHDRAW}}">
+        <ion-label>Withdraw</ion-label>
+      </ion-segment-button>     
+      <ion-segment-button value="{{SavingType.CANCELLED}}">
+        <ion-label>Cancelled</ion-label>
+      </ion-segment-button>   
+    </ion-segment>  
+    <div>
+      <div *ngFor="let saving of savingList">
+        <!-- <app-saving-card className='' (click)="savingGoalDetail(saving)" [savingGoal]="saving"></app-saving-card> -->
+        <ion-card (click)="savingGoalDetail(saving)">
+          <ion-card-content class="pad-top-10 pad-bottom-10">
+            <ion-item lines='none' class="ion-no-padding">
+              <ion-avatar slot="start">
+                <ngx-avatar cornerRadius='5' size='40' [round]=false name="{{ saving.title | slice:0:10 }}"></ngx-avatar>
+              </ion-avatar>
+              <ion-label class="ion-no-margin pad-10-left">
+                <ion-text class="fw-600">{{saving.title}}</ion-text>
+                <h3><ion-text color="medium">₹ {{ saving.current_amount | number :'1.0-0'  }} <span>of  ₹ {{ saving.target_amount | number:"1.0-0"  }}</span></ion-text></h3>
+              </ion-label>
+            </ion-item>
+          </ion-card-content>
+        </ion-card>
+      </div>
+      <div *ngIf="initialLoading">
+        <ion-item lines='none'>
+          <ion-avatar slot="start">
+            <ion-skeleton-text></ion-skeleton-text>
+          </ion-avatar>
+          <ion-skeleton-text animated></ion-skeleton-text>
+        </ion-item>     
+        <ion-skeleton-text animated></ion-skeleton-text>
+      </div>
+      <app-empty-state empty_text="No results found" *ngIf="savingList && !savingList.length"></app-empty-state>
+      <div *ngIf="!hasNext && savingList && savingList.length">    
+        <ion-card style="box-shadow: none;text-align: center;">
+          <ion-card-header>No more results to show</ion-card-header>
+        </ion-card>
+      </div>  
+    </div>     
+  <div *ngIf="hasNext">
+    <ion-infinite-scroll (ionInfinite)="loadMoreSavings($event)">
+      <ion-infinite-scroll-content 
+      loadingSpinner="bubbles"
+      loadingText="Loading more data..."></ion-infinite-scroll-content>
+    </ion-infinite-scroll>
+  </div> 
+  <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>  
+</ion-content>

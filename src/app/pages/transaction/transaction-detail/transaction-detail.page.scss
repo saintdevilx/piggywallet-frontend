@@ -1,0 +1,37 @@
+.history-card ion-icon.transaction-type {min-width: 25px;}
+.history-card {
+    margin-bottom: 11px;
+}
+ion-text.small-label.ion-color.ion-color-success {
+    --background: var(--ion-color-success, #10dc60) !important ;
+    background: var(--ion-color-success, #10dc60) !important;
+    color: #FFF;
+    padding: 3px 10px;
+    border-radius: 10px;
+    font-size: 9px;
+    font-weight: bold;
+}
+
+ion-text.small-label.ion-color.ion-color-warning {
+    --background: var(--ion-color-warning-shade, #e0b500) !important;
+    background: var(--ion-color-warning-shade, #e0b500) !important;
+    padding: 1px 10px;
+    border-radius: 10px;
+    color: #FFF;
+}
+ion-text.small-label.ion-color.ion-color-danger {
+    --background: var(--ion-color-danger, #f04141) !important;
+    background: var(--ion-color-danger, #f04141) !important;
+    padding: 1px 10px;
+    border-radius: 10px;
+    color: #FFF;
+}
+
+h3, h4, h5, h6 {
+    margin-left: 0;
+    margin-right: 0;
+    margin-top: 2px;
+    margin-bottom: 2px;
+    font-size: 14px;
+    font-weight: 400;
+}

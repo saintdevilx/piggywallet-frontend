@@ -1,0 +1,25 @@
+<ion-header>
+  <ion-toolbar class="purple-bg-color">
+    <ion-buttons>
+      <ion-back-button></ion-back-button>
+      <ion-title>Offer details</ion-title>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div class="referral-bg">  
+    <img src='{{ offerDetail.image }}' style="margin:0 auto;width:100%;" />
+  </div>      
+  <ion-card-content>
+    <h2>
+      <div class="fw-500">{{ offerDetail.title }}</div>
+    </h2>
+    <div>
+      <p style="white-space: pre-wrap;">{{ offerDetail.full_description }}</p>
+    </div>
+  </ion-card-content>
+</ion-content>
+<ion-footer *ngIf="offerDetail.action_title && offerDetail.action_url">
+  <ion-button expand='block' shape='round' (click)="gotoOffer($event)" >{{ offerDetail.action_title }}</ion-button>
+</ion-footer>

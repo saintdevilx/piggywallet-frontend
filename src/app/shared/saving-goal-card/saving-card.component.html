@@ -1,0 +1,12 @@
+<ion-card >          
+    <ion-card-content>
+        <ngx-avatar size='40' [round]=false cornerRadius='10' name="{{ savingGoal.title | slice:0:10 }}"></ngx-avatar>            
+        <div class="ion-text-center clips pad-top-10">
+            <p><ion-text color="dark" class="fw-700 oneline-text-wrap">{{ savingGoal.title }}</ion-text></p>
+            <ion-text class="full-width ion-text-center goal-stats">
+                ₹ {{ savingGoal.current_amount | number :'1.0-0'  }} <span>of  ₹ {{ savingGoal.target_amount | number:"1.0-0"  }}</span>
+            </ion-text>
+            <ion-progress-bar class="margin-top-5" value="{{ (savingGoal.current_amount/savingGoal.target_amount)*100 < 1 ? 0.01 : savingGoal.current_amount/savingGoal.target_amount }}"></ion-progress-bar>              
+        </div>
+    </ion-card-content>
+</ion-card>
